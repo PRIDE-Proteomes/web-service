@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>uk.ac.ebi.pride.maven</groupId>
@@ -10,7 +9,7 @@
     <groupId>uk.ac.ebi.pride.proteomes</groupId>
     <artifactId>pride-proteomes-webservice</artifactId>
     <packaging>war</packaging>
-    <version>0.4-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <!-- HOW TO BUILD
         (Check app-config.xml for which DB configuration is used)
@@ -35,10 +34,10 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/tags/pride-proteomes-webservice-1.0.0</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/tags/pride-proteomes-webservice-1.0.0
         </developerConnection>
-        <url>https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice</url>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/tags/pride-proteomes-webservice-1.0.0</url>
     </scm>
 
     <properties>
