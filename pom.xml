@@ -41,6 +41,9 @@
     </scm>
 
     <properties>
+        <!-- UTF-8 encoding to generate the build-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <proteomes.db.core.version>1.0.0</proteomes.db.core.version>
         <pride.web.utils.version>1.0</pride.web.utils.version>
         <spring.data.version>1.4.3.RELEASE</spring.data.version>
@@ -61,11 +64,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
             </plugin>
             <!-- jetty -->
             <plugin>
@@ -200,7 +198,7 @@
             <name>The EBI internal repository</name>
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
             <releases>
-				<enabled>true</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
