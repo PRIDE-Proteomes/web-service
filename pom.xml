@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>uk.ac.ebi.pride.maven</groupId>
@@ -9,7 +10,7 @@
     <groupId>uk.ac.ebi.pride.proteomes</groupId>
     <artifactId>pride-proteomes-webservice</artifactId>
     <packaging>war</packaging>
-    <version>1.0.0</version>
+    <version>0.4-SNAPSHOT</version>
 
     <!-- HOW TO BUILD
         (Check app-config.xml for which DB configuration is used)
@@ -34,16 +35,13 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/tags/pride-proteomes-webservice-1.0.0</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/tags/pride-proteomes-webservice-1.0.0
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/
         </developerConnection>
-        <url>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/tags/pride-proteomes-webservice-1.0.0</url>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice</url>
     </scm>
 
     <properties>
-        <!-- UTF-8 encoding to generate the build-->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <proteomes.db.core.version>1.0.0</proteomes.db.core.version>
         <pride.web.utils.version>1.0</pride.web.utils.version>
         <spring.data.version>1.4.3.RELEASE</spring.data.version>
@@ -64,6 +62,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
             </plugin>
             <!-- jetty -->
             <plugin>
