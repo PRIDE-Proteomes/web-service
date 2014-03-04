@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+
+<jdbc:embedded-database id="proteomesDataSource" type="HSQL">
+    <jdbc:script location="classpath:/db/hsqldb-config.sql"/>
+    <jdbc:script location="classpath:/db/schema.sql"/>
+    <jdbc:script location="classpath:/db/test-data.sql"/>
+    <!--<jdbc:script location="classpath:/mock/db/drop_schema.sql"/>-->
+</jdbc:embedded-database>
+
+<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="proteomesDataSource"/>
+    <property name="jpaVendorAdapter">
+        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+            <!--<property name="showSql" value="true"/>-->
+            <property name="database" value="HSQL"/>
+        </bean>
+    </property>
+    <property name="jpaProperties"> <!-- needed for lazy loading, otherwise the session is not kept even if transactional: http://stackoverflow.com/questions/578433/how-to-solve-lazy-initialization-exception-using-jpa-and-hibernate-as-provider -->
+        <props>
+            <!-- However in Hibernate 4.1.8 and 4.1.9 there is a bug related to this feature https://hibernate.atlassian.net/browse/HHH-7971
+                 hence we have to use 4.1.7 !
+            -->
+            <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+        </props>
+    </property>
+</bean>
+
+<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    <property name="jpaDialect">
+        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+    </property>
+</bean>
+
+
+</beans>

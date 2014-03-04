@@ -1,0 +1,207 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.ac.ebi.pride.maven</groupId>
+        <artifactId>pride-base-master</artifactId>
+        <version>1.0.2</version>
+    </parent>
+
+    <groupId>uk.ac.ebi.pride.proteomes</groupId>
+    <artifactId>pride-proteomes-webservice</artifactId>
+    <packaging>war</packaging>
+    <version>0.4-SNAPSHOT</version>
+
+    <!-- HOW TO BUILD
+        (Check app-config.xml for which DB configuration is used)
+
+         If configured to run of in memory HSQLDB, no profiles are needed.
+         Example command: mvn clean package
+
+         If configured to run of PRIDEPROT DB profiles are needed to configure the DB connection:
+            db-pride-proteomes-prideprot-user
+            db-pride-repo-pridepro
+         Example command: mvn -P db-pride-proteomes-prideprot-user,db-pride-repo-pridepro clean package
+    -->
+    <name>PRIDE Proteomes WebService</name>
+    <description>This package define the WebService for the PRIDE Proteomes project.</description>
+    <url>http://www.ebi.ac.uk/pride</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/
+        </developerConnection>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice</url>
+    </scm>
+
+    <properties>
+        <proteomes.db.core.version>1.0.0</proteomes.db.core.version>
+        <pride.web.utils.version>1.0</pride.web.utils.version>
+        <spring.data.version>1.4.3.RELEASE</spring.data.version>
+        <hibernate.version>4.1.7.Final</hibernate.version>
+        <commons.dbcp.version>1.4</commons.dbcp.version>
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- compiler (version and config from parent) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <!-- jetty -->
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.22</version>
+                <configuration> <!-- overwrite defaults set by the PRIDE master pom -->
+                    <webAppConfig>
+                        <contextPath>/pride/ws/proteomes</contextPath>
+                    </webAppConfig>
+                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>9190</port>
+                        </connector>
+                    </connectors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!-- junit for testing from parent -->
+
+        <!-- spring framework (version defined in parent) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring.data.version}</version>
+        </dependency>
+
+        <!-- HSQLDB for integration testing -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+
+        <!--oracle-->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>oracle-thin</artifactId>
+        </dependency>
+
+        <!-- Hibernate overwrite to avoid bug in later versions (see jpa-data-source-context.xml for details) -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+
+        <!-- DHCP datasource -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>${commons.dbcp.version}</version>
+        </dependency>
+
+
+        <!-- json (version from parent) -->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- logging (from parent) -->
+
+        <!-- servlet (version from parent) -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+
+        <!-- jsp (version from parent) -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+        </dependency>
+
+        <!-- pride web utils -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.web</groupId>
+            <artifactId>pride-web-utils</artifactId>
+            <version>${pride.web.utils.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.ac.ebi.pride.proteomes.db</groupId>
+            <artifactId>pride-proteomes-db-core</artifactId>
+            <version>${proteomes.db.core.version}</version>
+        </dependency>
+
+        <!-- javax WS -->
+        <!--
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        -->
+    </dependencies>
+
+
+    <!-- repositories inherited from parent
+         (only need repository for the parent itself and anything that is not in the parent) -->
+    <repositories>
+        <!-- EBI repo -->
+        <repository>
+            <id>nexus-ebi-repo</id>
+            <name>The EBI internal repository</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
+            <releases>
+				<enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+</project>
