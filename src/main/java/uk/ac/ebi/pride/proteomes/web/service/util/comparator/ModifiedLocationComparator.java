@@ -11,6 +11,7 @@ import java.util.Comparator;
  */
 public class ModifiedLocationComparator implements Comparator<ModifiedLocation> {
 
+    //TODO Add tests
 
     @Override
     public int compare(ModifiedLocation modifiedLocation, ModifiedLocation modifiedLocation2) {

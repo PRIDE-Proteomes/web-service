@@ -11,6 +11,8 @@ import java.util.Comparator;
  */
 public class ProteinComparator implements Comparator<Protein> {
 
+    //TODO Add tests
+
     @Override
     public int compare(Protein protein, Protein protein2) {
         if (protein == protein2) return 0;

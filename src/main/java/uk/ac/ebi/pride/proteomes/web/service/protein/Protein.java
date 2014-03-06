@@ -107,4 +107,24 @@ public class Protein implements HasTissues, HasModifications {
     public void setPeptides(Collection<LocatedPeptide> peptides) {
         this.peptides = peptides;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Protein)) return false;
+
+        Protein protein = (Protein) o;
+
+        if (taxonID != protein.taxonID) return false;
+        if (!accession.equals(protein.accession)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = accession.hashCode();
+        result = 31 * result + taxonID;
+        return result;
+    }
 }

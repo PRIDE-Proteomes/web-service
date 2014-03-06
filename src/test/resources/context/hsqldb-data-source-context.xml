@@ -7,9 +7,9 @@
 
 
 <jdbc:embedded-database id="proteomesDataSource" type="HSQL">
-    <jdbc:script location="classpath:/db/hsqldb-config.sql"/>
-    <jdbc:script location="classpath:/db/schema.sql"/>
-    <jdbc:script location="classpath:/db/test-data.sql"/>
+    <jdbc:script location="classpath:db/hsqldb-config.sql"/>
+    <jdbc:script location="classpath:db/hsql_schema.sql"/>
+    <jdbc:script location="classpath:db/test-data.sql"/>
     <!--<jdbc:script location="classpath:/mock/db/drop_schema.sql"/>-->
 </jdbc:embedded-database>
 

@@ -87,4 +87,21 @@ public class Peptide implements HasTissues, HasModifications {
     public void setAssays(Collection<String> assays) {
         this.assays = assays;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Peptide)) return false;
+
+        Peptide peptide = (Peptide) o;
+
+        if (!id.equals(peptide.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

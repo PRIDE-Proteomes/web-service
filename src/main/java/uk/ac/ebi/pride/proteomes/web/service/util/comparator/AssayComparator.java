@@ -8,6 +8,8 @@ import java.util.Comparator;
  * Time: 14:59
  */
 public class AssayComparator implements Comparator<String> {
+
+    //TODO Add tests
     @Override
     public int compare(String s1, String s2) {
         if (s1.equals(s2)) return 0;
