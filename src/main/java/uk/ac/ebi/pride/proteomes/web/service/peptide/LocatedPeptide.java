@@ -35,4 +35,23 @@ public class LocatedPeptide extends Peptide  {
         this.uniqueness = uniqueness;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LocatedPeptide)) return false;
+        if (!super.equals(o)) return false;
+
+        LocatedPeptide that = (LocatedPeptide) o;
+
+        if (position != null ? !position.equals(that.position) : that.position != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (position != null ? position.hashCode() : 0);
+        return result;
+    }
 }

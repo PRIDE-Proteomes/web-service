@@ -38,4 +38,12 @@ public enum Species {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Species{" +
+                "taxid=" + taxid +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
