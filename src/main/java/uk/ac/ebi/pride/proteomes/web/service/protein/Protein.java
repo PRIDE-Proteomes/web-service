@@ -15,6 +15,7 @@ import java.util.TreeSet;
  * @author Florian Reisinger
  * @since 0.1
  */
+//@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class Protein implements HasTissues, HasModifications {
 
     private String accession = "";
@@ -25,7 +26,7 @@ public class Protein implements HasTissues, HasModifications {
     private Collection<Tissue> tissues;
     private Collection<LocatedPeptide> peptides;
     // for web front-end only
-    private String coverage = ""; // not used any longer!
+    private String coverage; // not used any longer!
     private int[][] regions; // array of coverage regions represented by integer triplets [start pos, length, coverage value]
 
     public Protein() {

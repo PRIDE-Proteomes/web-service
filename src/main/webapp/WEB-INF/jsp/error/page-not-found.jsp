@@ -11,6 +11,11 @@
     <title>Page Not Found</title>
 </head>
 <body>
-    Page Not Found
+    <h2>Page Not Found</h2>
+  <span>
+      <br/>
+      <br/>
+      Please see the <a href="/index.html">documentation</a> for how to use this web service.
+  </span>
 </body>
 </html>

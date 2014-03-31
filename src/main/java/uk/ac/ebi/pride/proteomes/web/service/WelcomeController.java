@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service;
 
+import com.mangofactory.swagger.annotations.ApiIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +22,13 @@ public class WelcomeController extends ProteomesService {
     @Autowired
     DataRetriever dataRetriever;
 
-    @RequestMapping(value ="/", method = RequestMethod.GET, produces = "text/plain")
-    @ResponseBody
-    public String getDescription() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Description of the PRIDE Proteomes web service.\n");
-        sb.append("Available end points are :\n");
-        sb.append("\t/protein\t to query for proteins\n");
-        sb.append("\t/peptide\t to query for peptides\n");
-        sb.append("\t/group\t\t to query for protein groups\n");
-        sb.append("\t/sample\t\t to retrieve known tissue annotations\n");
-        sb.append("\t/mods\t\t to retrieve supported modifications\n");
-        sb.append("\t/stats\t\t to retrieve protein/peptide statistics\n");
-        sb.append("\t\n");
-
-        return sb.toString();
+    @ApiIgnore
+    @RequestMapping(value = {"", "/"}, method=RequestMethod.GET)
+    protected String gotoIndex() throws Exception {
+        return "forward:/index.html";
     }
 
-
+    @ApiIgnore
     @RequestMapping(value ="/check", method = RequestMethod.GET, produces = "text/plain")
     @ResponseBody
     public String getQuickCheck() {

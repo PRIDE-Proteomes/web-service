@@ -7,7 +7,9 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:/context/app-config.xml</param-value>
+        <param-value>
+            classpath*:/context/app-config.xml
+        </param-value>
     </context-param>
 
     <filter>
@@ -37,7 +39,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <error-page>

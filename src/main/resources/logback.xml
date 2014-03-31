@@ -20,6 +20,7 @@
     <logger name="org.springframework.beans" level="error" />
     <logger name="org.hibernate.type" level="warn" />
     <logger name="org.hibernate.param" level="warn" />
+    <logger name="com.wordnik.swagger" level="debug" />
 
     <root level="error">
         <appender-ref ref="console" />

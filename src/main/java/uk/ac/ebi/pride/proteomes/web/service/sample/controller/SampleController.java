@@ -27,19 +27,6 @@ public class SampleController {
     @Autowired
     DataRetriever dataRetriever;
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = "text/plain")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public String getDescription() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Sample Service Description\n");
-        sb.append("\tAvailable services:\n");
-        sb.append("\t\t/tissues\t\t\t\tto receive a list of supported tissues\n");
-        sb.append("\t\t/species\t\t\t\tto receive a list of supported species\n");
-        sb.append("\n");
-        return sb.toString();
-    }
-
 
     @RequestMapping(value ="/species", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)

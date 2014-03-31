@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.proteomes.web.service.protein.controller;
 
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,47 +31,9 @@ public class ProteinController  extends ProteomesService {
     DataRetriever dataRetriever;
 
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = "text/plain")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public String getDescription() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Protein Service Description\n");
-        sb.append("\tAvailable services:\n");
-        sb.append("\t\t/help\t\t\t\tto show a HTML help page\n");
-        sb.append("\t\t/<id>\t\t\t\tto query for a protein with its UniProt accession number\n");
-        sb.append("\t\t/list\t\t\t\tto list all proteins\n");
-        sb.append("\t\t/list/peptide/<sequence>\tto list all proteins that list a particular peptide (using the peptides AA sequence (capital case!))\n");
-        sb.append("\t\t/count\t\t\t\tto count all proteins\n");
-        sb.append("\tQueries can be restricted or customised applying filters and setting parameters:\n");
-        sb.append("\t\tspecies=<NCBI taxon ID>\t\tan integer to limit for a specific species (9606 (human), 10090 (mouse), 10116 (rat), 3702 (arabidopsis))\n");
-        sb.append("\t\ttissue=<tissue>\t\t\ta string to limit for a specific BTO tissue term (only a limited set of tissues is currently supported: blood, liver, brain)\n");
-        sb.append("\t\tdesc=<string>\t\t\ta keyword to match against the protein's description\n");
-        sb.append("\t\tmod=<modification type>\t\ta keyword to limit by pride modification type\n");
-        sb.append("\t\tincludeDetails=<true|false>\ta boolean to indicate whether the result should contain additional protein details (peptides, tissues)\n");
-        sb.append("\t\tincludeSequence=<true|false>\ta boolean to indicate whether the result should contain the protein sequence or not\n");
-        sb.append("\t\tpage=<integer>\t\t\tan integer (zero based) to specify the page of the paged result\n");
-        sb.append("\t\tpageSize=<integer>\t\tan integer (zero based) to specify the pageSize (number of results per page) of the paged result\n");
-        sb.append("\tFilters available per service:\n");
-        sb.append("\t\t/help\t\t\t\tno filters\n");
-        sb.append("\t\t/<id>\t\t\t\tincludeDetails (default: true)\n");
-        sb.append("\t\t/list\t\t\t\tspecies (default 9606), desc, includeSequence (default: false), page (default: 0), pageSize (default: 100)\n");
-        sb.append("\t\t/list/peptide/<sequence>\tspecies (default 9606), includeSequence (default: false)\n");
-        sb.append("\t\t/count\t\t\t\tspecies (default 9606), desc\n");
-        sb.append("\tExamples:\n");
-        sb.append("\t\t/protein/Q08648\n");
-        sb.append("\t\t/protein/list?species=9606&page=3&pageSize=20\n");
-        sb.append("\t\t/protein/list?species=9606&tissue=BTO:0000089\n");
-        sb.append("\t\t/protein/list?species=9606&tissue=BTO:0000089&mod=4\n");
-        sb.append("\t\t/protein/list/peptide/MQQGICR\n");
-        sb.append("\t\t/protein/list/peptide/MQQGICR?includeSequence=true\n");
-        sb.append("\t\t/protein/count?species=10090&desc=kinase\n");
-        sb.append("\n");
-        // ToDo: perhaps add explanation of what values are allowed for each filter
-        return sb.toString();
-    }
-
-
+    @ApiResponses( value = {
+       @ApiResponse(code = 404, message = "No records found for provided parameters.")
+     })
     @RequestMapping(value ="/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

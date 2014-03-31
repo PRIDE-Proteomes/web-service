@@ -24,35 +24,6 @@ public class ProteinGroupController extends ProteomesService {
     @Autowired
     DataRetriever dataRetriever;
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = "text/plain")
-    @ResponseBody
-    public String getDescription() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Protein Group Service Description\n");
-        sb.append("\tAvailable services:\n");
-        sb.append("\t\t/help\t\t\t\tto show a HTML help page\n");
-        sb.append("\t\t/<id>\t\t\t\tto query for a protein group with its ID\n");
-        sb.append("\t\t/list\t\t\t\tto list all protein groups\n");
-        sb.append("\t\t/list/protein/<accession>\tto list all groups for the specified protein\n");
-        sb.append("\tQueries can be restricted or customised applying filters and setting parameters:\n");
-//        sb.append("\t\ttissue=<tissue>\t\t\ta string to limit for a specific tissue type (only a limited set of tissues is currently supported: blood, liver, brain)\n");
-        sb.append("\t\tspecies=<NCBI taxon ID>\t\tan integer to limit for a specific species (only 9606 (human) and 10090 (mouse))\n");
-        sb.append("\t\tuniquePeptides=<true|false>\ta boolean to indicate whether the result should contain a list of peptides unique to the group\n");
-        sb.append("\t\tpage=<integer>\t\t\tan integer (zero based) to specify the page of the paged result\n");
-        sb.append("\t\tpageSize=<integer>\t\tan integer (zero based) to specify the pageSize (number of results per page) of the paged result\n");
-        sb.append("\tFilters available per service:\n");
-        sb.append("\t\t/help\t\t\t\tno filters\n");
-        sb.append("\t\t/<id>\t\t\t\tincludeUniquePeptides\n");
-        sb.append("\t\t/list\t\t\t\tspecies, page, pageSize\n");
-        sb.append("\t\t/list/protein/<accession>\tno filters\n");
-        sb.append("\tExamples:\n");
-        sb.append("\t\t/group/Q08648?includeUniquePeptides=true\n");
-        sb.append("\t\t/group/list?species=10090\n");
-//        sb.append("\t\t/group/list?tissue=blood&species=9606\n");
-        sb.append("\n");
-        return sb.toString();
-    }
-
 
     @RequestMapping(value ="/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

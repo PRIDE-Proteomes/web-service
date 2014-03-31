@@ -20,7 +20,8 @@
          If configured to run of PRIDEPROT DB profiles are needed to configure the DB connection:
             db-pride-proteomes-prideprot-user
             db-pride-repo-pridepro
-         Example command: mvn -P db-pride-proteomes-prideprot-user,db-pride-repo-pridepro clean package
+            proteomes-web-prod  (for swagger base path configuration)
+         Example command: mvn -P db-pride-proteomes-prideprot-user,db-pride-repo-pridepro, proteomes-web-prod clean package
     -->
     <name>PRIDE Proteomes WebService</name>
     <description>This package define the WebService for the PRIDE Proteomes project.</description>
@@ -72,7 +73,7 @@
                 <version>6.1.22</version>
                 <configuration> <!-- overwrite defaults set by the PRIDE master pom -->
                     <webAppConfig>
-                        <contextPath>/pride/ws/proteomes</contextPath>
+                        <contextPath>/</contextPath>
                     </webAppConfig>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
@@ -178,14 +179,12 @@
             <version>${proteomes.db.core.version}</version>
         </dependency>
 
-        <!-- javax WS -->
-        <!--
+        <!-- REST documentation (Swagger) -->
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
+        	<groupId>com.mangofactory</groupId>
+        	<artifactId>swagger-springmvc</artifactId>
+        	<version>0.8.3-SNAPSHOT</version>
         </dependency>
-        -->
     </dependencies>
 
 

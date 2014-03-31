@@ -29,19 +29,6 @@ public class StatisticsController {
     private long lastStatsUpdate;
 
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = "text/plain")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public String getDescription() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Statistics Service Description\n");
-        sb.append("\tAvailable services:\n");
-        sb.append("\t\t/summary\t\t\t\tto retrieve counts of proteins and peptides\n");
-        sb.append("\n");
-        return sb.toString();
-    }
-
-
     @RequestMapping(value ="/summary", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

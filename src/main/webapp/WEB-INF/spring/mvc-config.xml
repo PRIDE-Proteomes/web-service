@@ -17,19 +17,17 @@
 
     <mvc:interceptors>
            <mvc:interceptor>
-               <!--<mvc:mapping path="/simpleSearch*"/>  &lt;!&ndash; we must filter the request, and not the result and view (searchResult.jsp)&ndash;&gt;-->
-               <!--<mvc:mapping path="/users/*"/>-->
-               <!--<mvc:mapping path="/projects/*/assays/*"/>-->
                <mvc:mapping path="/**"/>
                <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
                    <property name="cacheSeconds" value="0"/>
                    <property name="useExpiresHeader" value="true"/>
                    <property name="useCacheControlHeader" value="true"/>
                    <property name="useCacheControlNoStore" value="true"/>
-                   <!--<property name="alwaysMustRevalidate" value="true"/>-->
                </bean>
            </mvc:interceptor>
        </mvc:interceptors>
+
+    <mvc:resources mapping="/**" location="/resources/" />
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
@@ -48,5 +46,13 @@
 
     <!-- Callback filter for the cross server queries support -->
     <bean class="uk.ac.ebi.pride.web.util.callback.filter.JsonpCallbackFilter" id="jsonpCallbackFilter" />
+
+     <!--Swagger config (REST service documentation)-->
+    <!-- Enable the default documentation controller-->
+    <context:component-scan base-package="com.mangofactory.swagger.controllers"/>
+    <!-- Pick up the bundled spring config-->
+    <context:component-scan base-package="com.mangofactory.swagger.configuration"/>
+    <!-- Pick up the properties needed for our Swagger configuration -->
+    <context:property-placeholder location="classpath:props/swagger.properties" ignore-unresolvable="true"/>
 
 </beans>

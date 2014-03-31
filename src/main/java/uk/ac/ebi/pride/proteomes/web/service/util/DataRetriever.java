@@ -124,13 +124,23 @@ public class DataRetriever {
         // return false if any query does not return results or if there is any exception
 
         boolean ok;
+        Connection connection = null;
         try {
-            Connection connection = proteomesDataSource.getConnection();
+            connection = proteomesDataSource.getConnection();
             DatabaseMetaData metaData = connection.getMetaData();
             logger.debug("Retrieved meta-data for DB: " + metaData.getDatabaseProductName());
             ok = !connection.isClosed(); // after retrieving of the meta-data we should have a working connection!
         } catch (SQLException e) {
             ok = false;
+            logger.error("SQLException during service check." , e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error("Failed to close connection during service check." , e);
+                }
+            }
         }
 
         return ok;

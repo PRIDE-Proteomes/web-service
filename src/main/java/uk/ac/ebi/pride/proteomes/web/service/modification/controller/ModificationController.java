@@ -27,18 +27,6 @@ public class ModificationController {
     @Autowired
     DataRetriever dataRetriever;
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = "text/plain")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public String getDescription() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Modification Service Description\n");
-        sb.append("\tAvailable services:\n");
-        sb.append("\t\t/list\t\t\t\tto retrieve a list of supported modifications\n");
-        sb.append("\n");
-        return sb.toString();
-    }
-
 
     @RequestMapping(value ="/list", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
