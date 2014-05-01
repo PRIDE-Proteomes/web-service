@@ -1,9 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.sample;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Florian Reisinger
@@ -11,7 +8,7 @@ import java.util.TreeSet;
  */
 public class SpeciesList {
 
-    private Collection<Species> speciesList;
+    private Set<Species> speciesList;
 
 
     public SpeciesList() {
@@ -23,7 +20,7 @@ public class SpeciesList {
     }
 
     public SpeciesList(Collection<Species> speciesList) {
-        this.speciesList = new ArrayList<Species>(speciesList.size());
+        this.speciesList = new TreeSet<Species>();
         this.speciesList.addAll(speciesList);
     }
 
@@ -35,7 +32,7 @@ public class SpeciesList {
         this.speciesList.addAll(species);
     }
 
-    public Collection<Species> getSpeciesList() {
+    public Set<Species> getSpeciesList() {
         return speciesList;
     }
 

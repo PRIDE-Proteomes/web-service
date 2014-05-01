@@ -4,6 +4,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ProteinGroupCompara
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -12,7 +13,7 @@ import java.util.TreeSet;
  */
 public class ProteinGroupList {
 
-    private Collection<ProteinGroup> proteinGroupList;
+    private Set<ProteinGroup> proteinGroupList;
 
     public ProteinGroupList() {
         this(new ProteinGroupComparator());
@@ -22,7 +23,7 @@ public class ProteinGroupList {
         this.proteinGroupList = new TreeSet<ProteinGroup>(comparator);
     }
 
-    public Collection<ProteinGroup> getProteinGroupList() {
+    public Set<ProteinGroup> getProteinGroupList() {
         return proteinGroupList;
     }
 

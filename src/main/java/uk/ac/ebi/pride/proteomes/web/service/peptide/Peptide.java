@@ -7,7 +7,7 @@ import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.AssayComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
 
-import java.util.Collection;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -20,9 +20,9 @@ public class Peptide implements HasTissues, HasModifications {
     private boolean symbolic;
     private String sequence;
     private int taxonID;
-    private Collection<ModifiedLocation> modifiedLocations;
-    private Collection<Tissue> tissues;
-    private Collection<String> assays;
+    private Set<ModifiedLocation> modifiedLocations;
+    private Set<Tissue> tissues;
+    private Set<String> assays;
 
     public Peptide() {
         this.modifiedLocations = new TreeSet<ModifiedLocation>(new ModifiedLocationComparator());
@@ -63,28 +63,28 @@ public class Peptide implements HasTissues, HasModifications {
     }
 
     @Override
-    public Collection<ModifiedLocation> getModifiedLocations() {
+    public Set<ModifiedLocation> getModifiedLocations() {
         return modifiedLocations;
     }
 
-    public void setModifiedLocations(Collection<ModifiedLocation> modifiedLocations) {
+    public void setModifiedLocations(Set<ModifiedLocation> modifiedLocations) {
         this.modifiedLocations = modifiedLocations;
     }
 
     @Override
-    public Collection<Tissue> getTissues() {
+    public Set<Tissue> getTissues() {
         return tissues;
     }
 
-    public void setTissues(Collection<Tissue> tissues) {
+    public void setTissues(Set<Tissue> tissues) {
         this.tissues = tissues;
     }
 
-    public Collection<String> getAssays() {
+    public Set<String> getAssays() {
         return assays;
     }
 
-    public void setAssays(Collection<String> assays) {
+    public void setAssays(Set<String> assays) {
         this.assays = assays;
     }
 

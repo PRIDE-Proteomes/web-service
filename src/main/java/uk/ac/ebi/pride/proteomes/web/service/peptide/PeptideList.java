@@ -4,6 +4,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.comparator.PeptideComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -12,7 +13,7 @@ import java.util.TreeSet;
  */
 public class PeptideList<P extends Peptide> {
 
-    private Collection<P> peptideList;
+    private Set<P> peptideList;
 
     public PeptideList() {
         this(new PeptideComparator());
@@ -22,7 +23,7 @@ public class PeptideList<P extends Peptide> {
         this.peptideList = new TreeSet<P>(comparator);
     }
 
-    public Collection<P> getPeptideList() {
+    public Set<P> getPeptideList() {
         return peptideList;
     }
 

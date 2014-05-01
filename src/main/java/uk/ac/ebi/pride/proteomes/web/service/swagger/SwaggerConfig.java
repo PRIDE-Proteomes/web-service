@@ -1,22 +1,25 @@
 package uk.ac.ebi.pride.proteomes.web.service.swagger;
 
-
+import com.fasterxml.classmate.TypeResolver;
 import com.mangofactory.swagger.configuration.JacksonScalaSupport;
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.configuration.SwaggerGlobalSettings;
 import com.mangofactory.swagger.core.SwaggerApiResourceListing;
 import com.mangofactory.swagger.core.SwaggerPathProvider;
+import com.mangofactory.swagger.models.alternates.AlternateTypeProvider;
+import com.mangofactory.swagger.models.alternates.WildcardType;
 import com.mangofactory.swagger.scanners.ApiListingReferenceScanner;
 import com.wordnik.swagger.model.ApiInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static com.mangofactory.swagger.models.alternates.Alternates.newRule;
 
 /**
  * @author Florian Reisinger
@@ -31,7 +34,6 @@ public class SwaggerConfig {
 
 
     /**
-     *
      * Autowire the bundled swagger config
      */
     @Autowired
@@ -51,29 +53,6 @@ public class SwaggerConfig {
         return jacksonScalaSupport;
     }
 
-    // This will change in the next releases of the API
-    @Bean
-    public Map<Class, String> getDataTypeMappings(){
-        Map<Class, String> dataTypeMappings = new HashMap<Class, String>();
-        dataTypeMappings.put(char.class, "string");
-        dataTypeMappings.put(String.class, "string");
-        dataTypeMappings.put(Integer.class, "int32");
-        dataTypeMappings.put(int.class, "int32");
-        dataTypeMappings.put(MultipartFile.class, "File");
-        return dataTypeMappings;
-    }
-
-    // This will change in the next releases of the API
-    @Bean
-    public Map<Class, String> getParameterDataTypes(){
-        Map<Class, String> dataTypeMappings = new HashMap<Class, String>();
-        dataTypeMappings.put(char.class, "string");
-        dataTypeMappings.put(String.class, "string");
-        dataTypeMappings.put(Integer.class, "int32");
-        dataTypeMappings.put(int.class, "int32");
-        dataTypeMappings.put(MultipartFile.class, "File");
-        return dataTypeMappings;
-    }
 
     /**
      * Global swagger settings
@@ -83,6 +62,12 @@ public class SwaggerConfig {
         SwaggerGlobalSettings swaggerGlobalSettings = new SwaggerGlobalSettings();
         swaggerGlobalSettings.setGlobalResponseMessages(springSwaggerConfig.defaultResponseMessages());
         swaggerGlobalSettings.setIgnorableParameterTypes(springSwaggerConfig.defaultIgnorableParameterTypes());
+        AlternateTypeProvider alternateTypeProvider = springSwaggerConfig.defaultAlternateTypeProvider();
+        TypeResolver typeResolver = new TypeResolver();
+        alternateTypeProvider.addRule(newRule(typeResolver.resolve(ResponseEntity.class),typeResolver.resolve(Void.class)));
+        alternateTypeProvider.addRule(newRule(typeResolver.resolve(ResponseEntity.class, WildcardType.class),typeResolver.resolve(WildcardType.class)));
+        alternateTypeProvider.addRule(newRule(typeResolver.resolve(HttpEntity.class, WildcardType.class),typeResolver.resolve(WildcardType.class)));
+        swaggerGlobalSettings.setAlternateTypeProvider(alternateTypeProvider);
         return swaggerGlobalSettings;
     }
 
@@ -101,7 +86,7 @@ public class SwaggerConfig {
     }
 
     /**
-     * Configure a SwaggerApiResourceListing for each swagger instance within your app. e.g. 1. private  2. external apis
+     * Configure a SwaggerApiResourceListing for each swagger instance within your app. e.g. 1. private 2. external apis
      * Required to be a spring bean as spring will call the postConstruct method to bootstrap swagger scanning.
      *
      * @return the SwaggerApiResourceListing to use.
@@ -126,12 +111,13 @@ public class SwaggerConfig {
         return swaggerApiResourceListing;
     }
 
-    @Bean
+
     /**
      * The ApiListingReferenceScanner does most of the work.
      * Scans the appropriate spring RequestMappingHandlerMappings
      * Applies the correct absolute paths to the generated swagger resources
      */
+    @Bean
     public ApiListingReferenceScanner apiListingReferenceScanner() {
         ApiListingReferenceScanner apiListingReferenceScanner = new ApiListingReferenceScanner();
 

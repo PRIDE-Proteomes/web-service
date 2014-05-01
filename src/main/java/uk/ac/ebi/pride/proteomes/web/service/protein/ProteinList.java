@@ -4,6 +4,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ProteinComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -12,7 +13,7 @@ import java.util.TreeSet;
  */
 public class ProteinList {
 
-    private Collection<Protein> proteinList;
+    private Set<Protein> proteinList;
 
     public ProteinList() {
         this(new ProteinComparator());

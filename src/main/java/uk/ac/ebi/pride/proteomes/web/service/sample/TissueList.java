@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.proteomes.web.service.sample;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -10,7 +11,7 @@ import java.util.TreeSet;
  */
 public class TissueList {
 
-    private Collection<Tissue> tissueList;
+    private Set<Tissue> tissueList;
 
     public TissueList() {
         this.tissueList = new TreeSet<Tissue>();
@@ -33,7 +34,7 @@ public class TissueList {
         this.tissueList.addAll(tissues);
     }
 
-    public Collection<Tissue> getTissueList() {
+    public Set<Tissue> getTissueList() {
         return tissueList;
     }
 

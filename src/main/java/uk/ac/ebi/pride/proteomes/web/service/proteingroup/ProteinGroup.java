@@ -15,8 +15,8 @@ public class ProteinGroup implements HasTissues {
     private String id;
     private int taxonID;
     private String description;
-    private Collection<Tissue> tissues;
-    private Collection<String> memberProteins;
+    private Set<Tissue> tissues;
+    private Set<String> memberProteins;
     private Map<String, Set<String>> uniquePeptides;
 
 
@@ -51,19 +51,19 @@ public class ProteinGroup implements HasTissues {
     }
 
     @Override
-    public Collection<Tissue> getTissues() {
+    public Set<Tissue> getTissues() {
         return tissues;
     }
 
-    public void setTissues(Collection<Tissue> tissues) {
+    public void setTissues(Set<Tissue> tissues) {
         this.tissues = tissues;
     }
 
-    public Collection<String> getMemberProteins() {
+    public Set<String> getMemberProteins() {
         return memberProteins;
     }
 
-    public void setMemberProteins(Collection<String> memberProteins) {
+    public void setMemberProteins(Set<String> memberProteins) {
         this.memberProteins = memberProteins;
     }
 

@@ -8,7 +8,7 @@ import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.LocatedPeptideComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
 
-import java.util.Collection;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -22,9 +22,9 @@ public class Protein implements HasTissues, HasModifications {
     private int taxonID = -1;
     private String sequence = "";
     private String description = "";
-    private Collection<ModifiedLocation> modifiedLocations; // there may be more than one modification on one position!!
-    private Collection<Tissue> tissues;
-    private Collection<LocatedPeptide> peptides;
+    private Set<ModifiedLocation> modifiedLocations; // there may be more than one modification on one position!!
+    private Set<Tissue> tissues;
+    private Set<LocatedPeptide> peptides;
     // for web front-end only
     private String coverage; // not used any longer!
     private int[][] regions; // array of coverage regions represented by integer triplets [start pos, length, coverage value]
@@ -84,28 +84,28 @@ public class Protein implements HasTissues, HasModifications {
     }
 
     @Override
-    public Collection<ModifiedLocation> getModifiedLocations() {
+    public Set<ModifiedLocation> getModifiedLocations() {
         return modifiedLocations;
     }
 
-    public void setModifiedLocations(Collection<ModifiedLocation> modifiedLocations) {
+    public void setModifiedLocations(Set<ModifiedLocation> modifiedLocations) {
         this.modifiedLocations = modifiedLocations;
     }
 
     @Override
-    public Collection<Tissue> getTissues() {
+    public Set<Tissue> getTissues() {
         return this.tissues;
     }
 
-    public void setTissues(Collection<Tissue> tissues) {
+    public void setTissues(Set<Tissue> tissues) {
         this.tissues = tissues;
     }
 
-    public Collection<LocatedPeptide> getPeptides() {
+    public Set<LocatedPeptide> getPeptides() {
         return peptides;
     }
 
-    public void setPeptides(Collection<LocatedPeptide> peptides) {
+    public void setPeptides(Set<LocatedPeptide> peptides) {
         this.peptides = peptides;
     }
 
