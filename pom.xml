@@ -1,15 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>uk.ac.ebi.pride.maven</groupId>
         <artifactId>pride-base-master</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </parent>
 
     <groupId>uk.ac.ebi.pride.proteomes</groupId>
     <artifactId>pride-proteomes-webservice</artifactId>
     <packaging>war</packaging>
     <version>1.0.1-SNAPSHOT</version>
+    <description>This package define the WebService for the PRIDE Proteomes project.</description>
 
     <!-- HOW TO BUILD
         (Check app-config.xml for which DB configuration is used)
@@ -21,11 +25,9 @@
             db-pride-proteomes-prideprot-user
             db-pride-repo-pridepro
             proteomes-web-prod  (for swagger base path configuration)
-         Example command: mvn -P db-pride-proteomes-prideprot-user,db-pride-repo-pridepro, proteomes-web-prod clean package
+         Example command: mvn -P db-pride-proteomes-prideprot-ro-user,db-pride-repo-pridepro, proteomes-web-prod clean package
     -->
-    <name>PRIDE Proteomes WebService</name>
-    <description>This package define the WebService for the PRIDE Proteomes project.</description>
-    <url>http://www.ebi.ac.uk/pride</url>
+
     <licenses>
         <license>
             <name>The Apache Software License 2.0</name>
@@ -34,22 +36,16 @@
         </license>
     </licenses>
 
-    <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/
-        </developerConnection>
-        <url>https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice</url>
-    </scm>
-
     <properties>
         <!-- UTF-8 encoding to generate the build-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <proteomes.db.core.version>1.0.0</proteomes.db.core.version>
         <pride.web.utils.version>1.0</pride.web.utils.version>
-        <spring.data.version>1.4.3.RELEASE</spring.data.version>
         <hibernate.version>4.1.7.Final</hibernate.version>
         <commons.dbcp.version>1.4</commons.dbcp.version>
+        <swagger.springmvc.version>0.8.3</swagger.springmvc.version>
+        <spring.version>4.1.0.RC1</spring.version>
     </properties>
 
     <build>
@@ -87,7 +83,25 @@
 
     <dependencies>
 
-        <!-- junit for testing from parent -->
+        <!-- pride web utils -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.web</groupId>
+            <artifactId>pride-web-utils</artifactId>
+            <version>${pride.web.utils.version}</version>
+        </dependency>
+
+        <!-- pride-proteomes-db-core -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.proteomes.db</groupId>
+            <artifactId>pride-proteomes-db-core</artifactId>
+            <version>${proteomes.db.core.version}</version>
+        </dependency>
+
+        <!-- junit for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+        </dependency>
 
         <!-- spring framework (version defined in parent) -->
         <dependency>
@@ -109,7 +123,6 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>${spring.data.version}</version>
         </dependency>
 
         <!-- HSQLDB for integration testing -->
@@ -136,14 +149,12 @@
             <version>${hibernate.version}</version>
         </dependency>
 
-
         <!-- DHCP datasource -->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>${commons.dbcp.version}</version>
         </dependency>
-
 
         <!-- json (version from parent) -->
         <dependency>
@@ -166,24 +177,11 @@
             <artifactId>jsp-api</artifactId>
         </dependency>
 
-        <!-- pride web utils -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride.web</groupId>
-            <artifactId>pride-web-utils</artifactId>
-            <version>${pride.web.utils.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>uk.ac.ebi.pride.proteomes.db</groupId>
-            <artifactId>pride-proteomes-db-core</artifactId>
-            <version>${proteomes.db.core.version}</version>
-        </dependency>
-
         <!-- REST documentation (Swagger) -->
         <dependency>
         	<groupId>com.mangofactory</groupId>
         	<artifactId>swagger-springmvc</artifactId>
-        	<version>0.8.3</version>
+        	<version>${swagger.springmvc.version}</version>
         </dependency>
     </dependencies>
 
@@ -203,6 +201,17 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>repo.spring.io</id>
+            <name>repo.spring.io-releases</name>
+            <url>http://repo.spring.io/libs-milestone-local</url>
+        </repository>
     </repositories>
+
+    <scm>
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice/trunk/</developerConnection>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride-proteomes/webservice</url>
+    </scm>
 
 </project>
