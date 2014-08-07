@@ -260,7 +260,7 @@ public class DataRetriever {
             dbProteins = proteinRepository.findAllByTaxidAndTissueAndModification(species, tissueCv, modName, pageRequest);
         }
 
-        logger.info("Initial protein list request retrieved " + list.size() + " proteins.");
+        logger.info("Initial protein list request retrieved " + dbProteins.size() + " proteins.");
 
 
         for (uk.ac.ebi.pride.proteomes.db.core.api.protein.Protein dbProtein : dbProteins) {
