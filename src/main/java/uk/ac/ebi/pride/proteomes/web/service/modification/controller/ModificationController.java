@@ -17,9 +17,9 @@ import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
 import java.util.List;
 
 /**
- * User: ntoro
- * Date: 19/02/2014
- * Time: 16:58
+ * @author ntoro@ebi.ac.uk
+ * @author florian@ebi.ac.uk
+ * @since 1.0.1
  */
 @Controller
 @RequestMapping(value="mods")
