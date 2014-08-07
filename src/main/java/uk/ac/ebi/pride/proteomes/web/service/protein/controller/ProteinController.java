@@ -40,6 +40,7 @@ public class ProteinController  extends ProteomesService {
     public Protein getById(@PathVariable("id") String id,
                            @RequestParam(value = "includeDetails", defaultValue = "true") boolean includeDetails) {
 
+        logger.info("Protein: getById request");
         Protein protein = dataRetriever.getProtein(id, includeDetails);
 
         if (protein == null) {
@@ -62,6 +63,7 @@ public class ProteinController  extends ProteomesService {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "pageSize", defaultValue = "100") int pageSize) {
 
+        logger.info("Protein: getProteinList request");
         ProteinList list = new ProteinList();
         // since we are using paging, we cannot filter the results after retrieval, as we would only filter a part of the data
         // therefore we have to create queries that do all of the filtering and return the proper (paged) results,
@@ -79,6 +81,7 @@ public class ProteinController  extends ProteomesService {
             @RequestParam(value = "species", defaultValue = "9606") int species,
             @RequestParam(value = "includeSequence", defaultValue = "false") boolean includeSequence) {
 
+        logger.info("Protein: getProteinListForPeptide request");
         ProteinList list = new ProteinList();
         list.addAll( dataRetriever.getProteinsByPeptideSequence(sequence, species, includeSequence));
         return list;
@@ -92,6 +95,7 @@ public class ProteinController  extends ProteomesService {
             @RequestParam(value = "species", defaultValue = "9606") int species,
             @RequestParam(value = "desc", defaultValue = "") String description) {
 
+        logger.info("Protein: getProteinCount request");
         return dataRetriever.getProteinCount(species, description);
     }
 
