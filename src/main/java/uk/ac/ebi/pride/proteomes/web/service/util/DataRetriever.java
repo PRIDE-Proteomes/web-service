@@ -248,11 +248,16 @@ public class DataRetriever {
         if (tissueName.equals(Tissue.defaultValue) && modName.equals(Modification.defaultValue)) {
             dbProteins = proteinRepository.findAllByTaxid(species, pageRequest);
         } else if (!tissueName.equals(Tissue.defaultValue) && modName.equals(Modification.defaultValue)) {
-            dbProteins = proteinRepository.findAllByTaxidAndTissue(species, tissueName,pageRequest);
+            // The repo only accepts cvTerm accessions, not the names, so we have to convert the tissue name
+            // ToDo: make the repo accept both
+            String tissueCv = Tissue.getTissue(tissueName).getCvTerm();
+            dbProteins = proteinRepository.findAllByTaxidAndTissue(species, tissueCv, pageRequest);
         } else if (tissueName.equals(Tissue.defaultValue) && !modName.equals(Modification.defaultValue)) {
             dbProteins = proteinRepository.findAllByTaxidAndModification(species, modName, pageRequest);
         } else {
-            dbProteins = proteinRepository.findAllByTaxidAndTissueAndModification(species, tissueName, modName, pageRequest);
+            // The repo only accepts cvTerm accessions, not the names, so we have to convert the tissue name
+            String tissueCv = Tissue.getTissue(tissueName).getCvTerm();
+            dbProteins = proteinRepository.findAllByTaxidAndTissueAndModification(species, tissueCv, modName, pageRequest);
         }
 
         logger.info("Initial protein list request retrieved " + list.size() + " proteins.");
