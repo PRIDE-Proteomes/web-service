@@ -5,10 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
 import uk.ac.ebi.pride.proteomes.web.service.sample.SpeciesList;
 import uk.ac.ebi.pride.proteomes.web.service.sample.TissueList;
 import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
@@ -35,11 +33,30 @@ public class SampleController {
         return new SpeciesList(dataRetriever.getSpecies());
     }
 
-    @RequestMapping(value ="/tissues", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value ="/tissues/list", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public TissueList getTissues() {
         return new TissueList(dataRetriever.getTissues());
+    }
+
+    @RequestMapping(value ="/tissues/list/species/${species}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public TissueList getTissues(@RequestParam(value = "species", required = false, defaultValue = Species.defaultValue) String speciesName
+    ) {
+        Species species = Species.getFromString(speciesName);
+        return new TissueList(dataRetriever.getTissues(species));
+    }
+
+    @RequestMapping(value ="/tissues/count/species/${species}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public int countTissues(@RequestParam(value = "species", required = false, defaultValue = Species.defaultValue) String speciesName
+    ) {
+
+        Species species = Species.getFromString(speciesName);
+        return dataRetriever.countTissue(species);
     }
 
     // ToDo: add other services, like disease and cell type

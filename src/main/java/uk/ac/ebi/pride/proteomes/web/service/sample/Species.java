@@ -12,7 +12,7 @@ public enum Species {
     RAT(10116, "Rattus norvegicus (Rat)"),
     ARABIDOPSIS(3702, "Arabidopsis thaliana (Mouse-ear cress)");
 
-    public static final String defaultValue = "-1";
+    public static final String defaultValue = "9606";
 
     private Species(int taxid, String name) {
         this.taxid = taxid;
@@ -38,6 +38,24 @@ public enum Species {
         }
         return null;
     }
+    public static Species getByName(String speciesName) {
+        for (Species species : Species.values()) {
+            if (species.getName().equalsIgnoreCase(speciesName) || species.name().equalsIgnoreCase(speciesName)) {
+                return species;
+            }
+        }
+        return null;
+    }
+
+    public static Species getFromString(String speciesString) {
+        try {
+            Integer id = Integer.parseInt(speciesString);
+            return getByTaxid(id);
+        } catch (NumberFormatException e) {
+            return getByName(speciesString);
+        }
+    }
+
 
     @Override
     public String toString() {

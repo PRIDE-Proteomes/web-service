@@ -13,6 +13,7 @@ import uk.ac.ebi.pride.proteomes.web.service.ResourceNotFoundException;
 import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
 import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.protein.ProteinList;
+import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
 import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
 
@@ -55,19 +56,25 @@ public class ProteinController  extends ProteomesService {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ProteinList getProteinList(
-            @RequestParam(value = "species", defaultValue = "9606") int species,
-            @RequestParam(value = "tissue", defaultValue = Tissue.defaultValue) String tissueName,
-            @RequestParam(value = "mod", defaultValue = Modification.defaultValue) String modName,
+            @RequestParam(value = "species", required = true, defaultValue = Species.defaultValue) String speciesName,
+            @RequestParam(value = "tissue", required = false, defaultValue = Tissue.defaultValue) String tissueName,
+            @RequestParam(value = "mod", required = false, defaultValue = Modification.defaultValue) String modName,
 //            @RequestParam(value = "desc", defaultValue = "") String description,
-            @RequestParam(value = "includeSequence", defaultValue = "false") boolean includeSequence,
+            @RequestParam(value = "includeSequence", required = false, defaultValue = "false") boolean includeSequence,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "pageSize", defaultValue = "100") int pageSize) {
 
         logger.info("Protein: getProteinList request");
         ProteinList list = new ProteinList();
+
+        Species species = Species.getFromString(speciesName);
+        if (species == null) {
+            // ToDo: proper error return!
+            return null;
+        }
         // since we are using paging, we cannot filter the results after retrieval, as we would only filter a part of the data
         // therefore we have to create queries that do all of the filtering and return the proper (paged) results,
-        list.addAll( dataRetriever.getProteins(species, tissueName, modName, includeSequence, page, pageSize));
+        list.addAll( dataRetriever.getProteins(species.getTaxid(), tissueName, modName, includeSequence, page, pageSize));
 //        list.addAll( dataRetriever.getProteins(species, description, includeSequence, page, pageSize));
         return list;
     }
@@ -78,7 +85,7 @@ public class ProteinController  extends ProteomesService {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ProteinList getProteinListForPeptide(@PathVariable("sequence") String sequence,
-            @RequestParam(value = "species", defaultValue = "9606") int species,
+            @RequestParam(value = "species", required = true, defaultValue = Species.defaultValue) int species,
             @RequestParam(value = "includeSequence", defaultValue = "false") boolean includeSequence) {
 
         logger.info("Protein: getProteinListForPeptide request");
@@ -91,12 +98,19 @@ public class ProteinController  extends ProteomesService {
     @RequestMapping(value ="/count", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String getProteinCount(
-            @RequestParam(value = "species", defaultValue = "9606") int species,
-            @RequestParam(value = "desc", defaultValue = "") String description) {
+    public Long getProteinCount(
+            @RequestParam(value = "species", required = true, defaultValue = "9606") String speciesName,
+            @RequestParam(value = "tissue", required = false, defaultValue = Tissue.defaultValue) String tissueName,
+            @RequestParam(value = "mod", required = false, defaultValue = Modification.defaultValue) String modName
+    ) {
 
         logger.info("Protein: getProteinCount request");
-        return dataRetriever.getProteinCount(species, description);
+        Species species = Species.getFromString(speciesName);
+        if (species == null) {
+            // ToDo: proper error return!
+            return null;
+        }
+        return dataRetriever.countProteins(species.getTaxid(), tissueName, modName);
     }
 
 

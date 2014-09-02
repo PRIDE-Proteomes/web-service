@@ -55,7 +55,7 @@ public enum Modification {
     NONE("none", "none", 0, false), // mapped to null String or defaultValue (used to specify that no modification is selected)
     UNKNOWN("unknown", "unknown", 0, false); // anything that can not be mapped to the 'known' modifications above
 
-    public static final String defaultValue = "none";
+    public static final String defaultValue = "any";
     private final String modId;
     private final String modName;
     private final double monoDelta;

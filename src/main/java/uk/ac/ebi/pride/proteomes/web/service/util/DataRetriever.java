@@ -28,9 +28,7 @@ import uk.ac.ebi.pride.proteomes.web.service.statistics.Statistics;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.UniprotAccessionComparator;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -86,7 +84,7 @@ public class DataRetriever {
         return true;
     }
 
-/*
+/**
     public boolean isAllOKDetailed() {
         Pageable pageable = new PageRequest(0, 5); // we request the first page with few entries
         try {
@@ -272,6 +270,27 @@ public class DataRetriever {
 
 
         return list;
+    }
+    @Transactional(readOnly = true)
+    public Long countProteins(int species, String tissueName, String modName) {
+        long resultCount;
+
+        if (tissueName.equals(Tissue.defaultValue) && modName.equals(Modification.defaultValue)) {
+            resultCount = proteinRepository.countByTaxid(species);
+        } else if (!tissueName.equals(Tissue.defaultValue) && modName.equals(Modification.defaultValue)) {
+            // The repo only accepts cvTerm accessions, not the names, so we have to convert the tissue name
+            // ToDo: make the repo accept both
+            String tissueCv = Tissue.getTissue(tissueName).getCvTerm();
+            resultCount = proteinRepository.countByTaxidAndTissue(species, tissueCv);
+        } else if (tissueName.equals(Tissue.defaultValue) && !modName.equals(Modification.defaultValue)) {
+            resultCount = proteinRepository.countByTaxidAndModification(species, modName);
+        } else {
+            // The repo only accepts cvTerm accessions, not the names, so we have to convert the tissue name
+            String tissueCv = Tissue.getTissue(tissueName).getCvTerm();
+            resultCount = proteinRepository.countByTaxidAndTissueAndModification(species, tissueCv, modName);
+        }
+
+        return resultCount;
     }
 
 //    @Transactional(readOnly = true)
@@ -477,6 +496,71 @@ public class DataRetriever {
         List<Tissue> list = new ArrayList<Tissue>();
         list.addAll(Arrays.asList(Tissue.values()));
         return list;
+    }
+    // ToDo: combine getTissues methods?
+    public Set<Tissue> getTissues(Species species) {
+        // ToDo: perhaps solve in a more elegant way with spring data
+        // select distinct(cv_term) from prot_cv c, protein p where c.PROTEIN_ID = p.PROTEIN_ID AND CV_TERM like 'BTO:%' AND p.TAXID = 9606;
+        if (species == null) {
+            return null;
+        }
+
+        Set<Tissue> tissues = new HashSet<Tissue>();
+        Connection connection = null;
+        try {
+            connection = proteomesDataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select distinct(cv_term) from prot_cv c, protein p where c.PROTEIN_ID=p.PROTEIN_ID AND CV_TERM like 'BTO:%' AND p.TAXID=?");
+            statement.setInt(1, species.getTaxid());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String tissueAccession = rs.getString("cv_term");
+                tissues.add( Tissue.getTissue(tissueAccession) );
+            }
+        } catch (SQLException e) {
+            logger.error("SQLException during service check." , e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error("Failed to close connection during service check." , e);
+                }
+            }
+        }
+
+        return tissues;
+    }
+
+    public int countTissue(Species species) {
+        // ToDo: perhaps solve in a more elegant way with spring data
+        // select count(distinct(cv_term)) from prot_cv c, protein p where c.PROTEIN_ID = p.PROTEIN_ID AND CV_TERM like 'BTO:%' AND p.TAXID = 9606;
+        int tissueCount = 0;
+        Connection connection = null;
+        try {
+            connection = proteomesDataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select count(distinct(cv_term)) from prot_cv c, protein p where c.PROTEIN_ID = p.PROTEIN_ID AND CV_TERM like 'BTO:%' AND p.TAXID = ?");
+            statement.setInt(1, species.getTaxid());
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                tissueCount = rs.getInt(1);
+                logger.info("Tissue count for species " + species.getName() + " : " + tissueCount);
+            } else {
+                logger.error("Could not retrieve tissue count for species: " +species.getName());
+            }
+        } catch (SQLException e) {
+            logger.error("SQLException during service check." , e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error("Failed to close connection during service check." , e);
+                }
+            }
+        }
+
+        return tissueCount;
     }
 
     public List<Modification> getModifications() {

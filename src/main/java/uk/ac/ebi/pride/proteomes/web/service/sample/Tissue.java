@@ -72,7 +72,7 @@ public enum Tissue {
     NONE("none", "none"),
     UNKNOWN("unknown", "unknown");
 
-    public static final String defaultValue = "none";
+    public static final String defaultValue = "any";
     private final String cvTerm;
     private final String cvName;
 
@@ -88,7 +88,9 @@ public enum Tissue {
         }
 
         for (Tissue tissue : Tissue.values()) {
-            if (tissueIdentifier.equalsIgnoreCase(tissue.getCvTerm()) || tissueIdentifier.equalsIgnoreCase(tissue.getCvName())) {
+            if (tissueIdentifier.equalsIgnoreCase(tissue.getCvTerm())
+                    || tissueIdentifier.equalsIgnoreCase(tissue.getCvName())
+                    || tissueIdentifier.equalsIgnoreCase(tissue.name())) {
                 return tissue;
             }
         }
