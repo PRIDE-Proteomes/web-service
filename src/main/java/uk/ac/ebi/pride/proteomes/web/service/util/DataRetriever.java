@@ -147,6 +147,7 @@ public class DataRetriever {
 
     @Transactional(readOnly = true)
     public ProteinGroup getProteinGroupById(String id, boolean addUniquePeptides) {
+        // ToDo: add all peptides and flag unique ones rather than listing only unique ones?
         uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroup dbGroup = proteinGroupRepository.findById(id);
 
         if (dbGroup == null) {
@@ -157,19 +158,19 @@ public class DataRetriever {
         ProteinGroup serviceGroup = ModelConverter.convertProteinGroup(dbGroup);
         // check if we should add a list of unique peptides mapped to their protein accessions
         if (addUniquePeptides) {
-            List<PeptideGroup> dbPeptideGroups = peptideGroupRepository.findByProteinGroupIdAndUniqueness(id, 1);
-            for (PeptideGroup dbPeptideGroup : dbPeptideGroups) {
-                // we are only interested in peptides that are unique to this group
-                String peptideSequence = dbPeptideGroup.getPeptide().getSequence();
+            List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> dbPeptides = findPeptideByProtein(id, true);
+            for (uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide dbPeptide : dbPeptides) {
+                // we are only interested in peptides that are unique to this group (which may have multiple proteins)
+                String peptideSequence = dbPeptide.getSequence();
 
-                // populate a map of peptide sequences to their proteins origins
+                // populate a map of peptide sequences to their protein origins
                 Set<String> tmpProteins = serviceGroup.getUniquePeptides().get(peptideSequence);
                 if (tmpProteins == null) {
                     tmpProteins = new TreeSet<String>(new UniprotAccessionComparator());
                 }
                 // map the unique peptide to the protein(s) of the group
                 for (uk.ac.ebi.pride.proteomes.db.core.api.protein.Protein protein : dbGroup.getProteins()) {
-                    for (PeptideProtein tmpProtein : dbPeptideGroup.getPeptide().getProteins()) {
+                    for (PeptideProtein tmpProtein : dbPeptide.getProteins()) {
                         if (tmpProtein.getProtein().equals(protein)) {
                             tmpProteins.add(protein.getProteinAccession());
                         }
@@ -179,6 +180,27 @@ public class DataRetriever {
             }
         }
         return serviceGroup;
+    }
+    private List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> findPeptideByProtein(String accession, boolean uniqueOnly) {
+        List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> peptides = new ArrayList<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide>();
+
+        // get unique pepitdes by first querying all and then applying a filter
+        // currently faster than the alternative below
+        List<PeptideGroup> allPepGroups = peptideGroupRepository.findByProteinGroupId(accession);
+        for (PeptideGroup pepGroup : allPepGroups) {
+            if (!uniqueOnly || pepGroup.getUniqueness() == 1) {
+                peptides.add(pepGroup.getPeptide());
+            }
+        }
+
+        // get unique peptides with dedicated DB repo query
+        // ToDo: this is not efficient at all! Possibly a missing index in the DB...
+//        List<PeptideGroup> uniquePepGroups = peptideGroupRepository.findByProteinGroupIdAndUniqueness(accession, 1);
+//        for (PeptideGroup pepGroup : uniquePepGroups) {
+//            peptides.add(pepGroup.getPeptide());
+//        }
+
+        return peptides;
     }
 
     @Transactional(readOnly = true)
