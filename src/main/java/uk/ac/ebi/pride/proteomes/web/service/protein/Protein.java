@@ -1,5 +1,8 @@
 package uk.ac.ebi.pride.proteomes.web.service.protein;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 import uk.ac.ebi.pride.proteomes.web.service.modification.HasModifications;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.LocatedPeptide;
@@ -16,14 +19,23 @@ import java.util.TreeSet;
  * @since 0.1
  */
 //@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@ApiModel(value = "Protein", description = "Information about a protein")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Protein implements HasTissues, HasModifications {
 
+    @ApiModelProperty(value = "the protein's accession")
     private String accession = "";
+    @ApiModelProperty(value = "the protein's species (taxon id)")
     private int taxonID = -1;
+    @ApiModelProperty(value = "the protein's sequence")
     private String sequence = "";
+    @ApiModelProperty(value = "the protein's description")
     private String description = "";
+    @ApiModelProperty(value = "the protein's reported modifications")
     private Set<ModifiedLocation> modifiedLocations; // there may be more than one modification on one position!!
+    @ApiModelProperty(value = "the protein's reported tissue annotations")
     private Set<Tissue> tissues;
+    @ApiModelProperty(value = "the protein's reported peptides")
     private Set<LocatedPeptide> peptides;
     // for web front-end only
     private String coverage; // not used any longer!

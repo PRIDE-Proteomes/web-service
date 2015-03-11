@@ -1,12 +1,16 @@
 package uk.ac.ebi.pride.proteomes.web.service.peptide;
 
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 /**
  * @author Florian Reisinger
  * @since 0.1
  */
 public class LocatedPeptide extends Peptide  {
 
+    @ApiModelProperty(value = "the position of the peptide on the mapped protein")
     private Integer position = -1;
+    @ApiModelProperty(value = "count if the peptide is unique to the protein (unique == 1)")
     private Integer uniqueness = -1;
 
     public LocatedPeptide(Peptide peptide) {

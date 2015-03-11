@@ -13,19 +13,15 @@
     <artifactId>pride-proteomes-webservice</artifactId>
     <packaging>war</packaging>
     <version>1.0.1-SNAPSHOT</version>
-    <description>This package define the WebService for the PRIDE Proteomes project.</description>
+    <description>The Web Service for the PRIDE Proteomes project.</description>
 
     <!-- HOW TO BUILD
-        (Check app-config.xml for which DB configuration is used)
+         To build the project profiles are needed:
+            db-pride-proteomes-prideprot-ro-user // DB access credentials
+            db-pride-repo-pridepro               // DB connection details
 
-         If configured to run of in memory HSQLDB, no profiles are needed.
-         Example command: mvn clean package
-
-         If configured to run of PRIDEPROT DB profiles are needed to configure the DB connection:
-            db-pride-proteomes-prideprot-user
-            db-pride-repo-pridepro
-            proteomes-web-prod  (for swagger base path configuration)
-         Example command: mvn -P db-pride-proteomes-prideprot-ro-user,db-pride-repo-pridepro, proteomes-web-prod clean package
+         Example build command:
+            mvn -P db-pride-proteomes-prideprot-ro-user,db-pride-repo-pridepro clean package
     -->
 
     <licenses>
@@ -44,7 +40,7 @@
         <pride.web.utils.version>1.0</pride.web.utils.version>
         <hibernate.version>4.1.7.Final</hibernate.version>
         <commons.dbcp.version>1.4</commons.dbcp.version>
-        <swagger.springmvc.version>0.8.3</swagger.springmvc.version>
+        <swagger.springmvc.version>0.8.6</swagger.springmvc.version>
         <spring.version>4.1.0.RC1</spring.version>
     </properties>
 

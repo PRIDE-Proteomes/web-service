@@ -2,10 +2,7 @@ package uk.ac.ebi.pride.proteomes.web.service.protein;
 
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ProteinComparator;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Florian Reisinger
@@ -23,7 +20,7 @@ public class ProteinList {
         this.proteinList = new TreeSet<Protein>(comparator);
     }
 
-    public Collection<Protein> getProteinList() {
+    public Set<Protein> getProteinList() {
         return proteinList;
     }
 

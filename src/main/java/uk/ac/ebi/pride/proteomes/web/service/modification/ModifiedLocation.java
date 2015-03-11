@@ -1,12 +1,20 @@
 package uk.ac.ebi.pride.proteomes.web.service.modification;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 /**
  * @author Florian Reisinger
  * @since 0.1
  */
+@ApiModel(value = "ModifiedLocation", description = "A localised peptide modification")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ModifiedLocation {
 
+    @ApiModelProperty(value = "the modified sequence position")
     private Integer position;
+    @ApiModelProperty(value = "the modification name")
     private Modification modification;
 
     public ModifiedLocation() {

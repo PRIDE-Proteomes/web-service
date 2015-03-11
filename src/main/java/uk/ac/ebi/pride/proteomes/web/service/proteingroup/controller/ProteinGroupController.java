@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.proteingroup.controller;
 
+import com.wordnik.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
  * @author Florian Reisinger
  * @since 0.1
  */
+@Api(value = "proteinGroup", description = "retrieve information about proteinGroups", position = 3)
 @Controller
 @RequestMapping(value="group")
 public class ProteinGroupController extends ProteomesService {
@@ -30,9 +32,11 @@ public class ProteinGroupController extends ProteomesService {
     public ProteinGroup getById(@PathVariable("id") String id,
                                 @RequestParam(value = "uniquePeptides", defaultValue = "true") boolean uniquePeptides) {
 
-        System.out.println("ProteinGroup " + id + " requested.");
+        logger.debug("ProteinGroup " + id + " requested.");
 
+        long start = System.currentTimeMillis();
         ProteinGroup group = dataRetriever.getProteinGroupById(id, uniquePeptides);
+        logger.debug("ProteinGroup retrieval took [ms]: " + (System.currentTimeMillis() - start));
 
         if (group == null) {
             throw new ResourceNotFoundException("No records found for protein group: " + id);

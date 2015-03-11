@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.statistics.controller;
 
+import com.wordnik.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
  * @author Florian Reisinger
  * @since 0.1
  */
+@Api(value = "stats", description = "retrieve basic statistics", position = 6)
 @Controller
 @RequestMapping(value="stats")
 public class StatisticsController {

@@ -1,5 +1,8 @@
 package uk.ac.ebi.pride.proteomes.web.service.peptide;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 import uk.ac.ebi.pride.proteomes.web.service.modification.HasModifications;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.sample.HasTissues;
@@ -14,14 +17,24 @@ import java.util.TreeSet;
  * @author Florian Reisinger
  * @since 0.1
  */
+@ApiModel(value = "Peptide", description = "Information about a peptide")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Peptide implements HasTissues, HasModifications {
 
     private String id;
+    @ApiModelProperty(value = "flag whether this peptide is 'symbolic' (represents a AA sequence only, no modifications)")
     private boolean symbolic;
+    @ApiModelProperty(value = "the peptide's AA sequence")
     private String sequence;
+    @ApiModelProperty(value = "the peptide's species (taxon id)")
     private int taxonID;
+    @ApiModelProperty(value = "positioned modifications of the peptide (if any and if not symbolic)")
     private Set<ModifiedLocation> modifiedLocations;
+    @ApiModelProperty(value = "a list of reported tissues")
     private Set<Tissue> tissues;
+    @ApiModelProperty(value = "a list of assays the peptide has been reported in")
+    // this should be deprecated, Proteomes data should be independent of Archive assays/projects
+    // but needed for the current implementation
     private Set<String> assays;
 
     public Peptide() {

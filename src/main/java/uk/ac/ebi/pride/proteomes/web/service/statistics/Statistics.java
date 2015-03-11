@@ -1,5 +1,9 @@
 package uk.ac.ebi.pride.proteomes.web.service.statistics;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -8,11 +12,17 @@ import java.util.TreeSet;
  * @author Florian Reisinger
  * @since 0.1
  */
+@ApiModel(value = "Statistics", description = "Basic statistics PRIDE Proteomes data")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Statistics {
 
+    @ApiModelProperty(value = "list of statistics for each species (one dataset per species)")
     private Set<DatasetStats> datasetStatistics;
+    @ApiModelProperty(value = "total protein count in Proteomes")
     private long proteinCount;
+    @ApiModelProperty(value = "total peptiform count in Proteomes")
     private long peptiformCount;
+    @ApiModelProperty(value = "total unique peptides (species specific) count in Proteomes")
     private long symbolicPeptideCount;
 
 
@@ -27,6 +37,7 @@ public class Statistics {
     }
 
 
+    @ApiModelProperty(value = "total species (e.g. dataset) count in Proteomes")
     public int getSpeciesCount() {
         return datasetStatistics.size();
     }

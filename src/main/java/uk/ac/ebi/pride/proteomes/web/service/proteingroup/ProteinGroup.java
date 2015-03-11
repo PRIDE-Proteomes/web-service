@@ -1,5 +1,8 @@
 package uk.ac.ebi.pride.proteomes.web.service.proteingroup;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 import uk.ac.ebi.pride.proteomes.web.service.sample.HasTissues;
 import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.UniprotAccessionComparator;
@@ -10,13 +13,20 @@ import java.util.*;
  * @author Florian Reisinger
  * @since 0.1
  */
+@ApiModel(value = "ProteinGroup", description = "A protein group (for example proteins grouped by gene)")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProteinGroup implements HasTissues {
 
     private String id;
+    @ApiModelProperty(value = "the species for this group (taxon id)")
     private int taxonID;
+    @ApiModelProperty(value = "a description for the group")
     private String description;
+    @ApiModelProperty(value = "a list of tissues (aggregated from the proteins/peptides associated to this group)")
     private Set<Tissue> tissues;
+    @ApiModelProperty(value = "the proteins belonging to this group")
     private Set<String> memberProteins;
+    @ApiModelProperty(value = "peptides unique to this group (not necessarily unique to a single protein!)")
     private Map<String, Set<String>> uniquePeptides;
 
 

@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.protein.controller;
 
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
  * @author Florian Reisinger
  * @since 0.1
  */
+@Api(value = "protein", description = "retrieve information about proteins", position = 1)
 @Controller
 @RequestMapping(value="protein")
 public class ProteinController  extends ProteomesService {
@@ -41,8 +43,10 @@ public class ProteinController  extends ProteomesService {
     public Protein getById(@PathVariable("id") String id,
                            @RequestParam(value = "includeDetails", defaultValue = "true") boolean includeDetails) {
 
-        logger.info("Protein: getById request");
+        logger.info("Protein requested by id: " + id);
+        long start = System.currentTimeMillis();
         Protein protein = dataRetriever.getProtein(id, includeDetails);
+        logger.debug("Protein request by id took [ms]: " + (System.currentTimeMillis() - start));
 
         if (protein == null) {
             throw new ResourceNotFoundException("No records found for protein: " + id);
