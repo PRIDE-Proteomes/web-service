@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Florian Reisinger
  *         Date: 28/01/14
- * @since $version
+ * @since 1.0.0
  */
 public class UniProtAccessionComparatorTest {
 
