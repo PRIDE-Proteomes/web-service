@@ -17,7 +17,8 @@
 
     <jpa:repositories base-package="uk.ac.ebi.pride.proteomes.db.core.api"/>
 
-    <!-- Callback filter for the cross server queries support -->
-    <bean id="jsonpCallbackFilter" class="uk.ac.ebi.pride.web.util.callback.filter.JsonpCallbackFilter"/>
+    <!-- Callback and CORS filter for the cross server query support -->
+    <bean class="uk.ac.ebi.pride.web.util.callback.filter.JsonpCallbackFilter" id="jsonpCallbackFilter" />
+    <bean class="uk.ac.ebi.pride.proteomes.web.service.util.filter.SimpleCORSFilter" id="corsFilter"/>
 
 </beans>
