@@ -13,7 +13,7 @@
     <artifactId>pride-proteomes-webservice</artifactId>
     <packaging>war</packaging>
     <version>1.0.1-SNAPSHOT</version>
-    <description>The Web Service for the PRIDE Proteomes project.</description>
+    <description>The Web Service for the PRIDE Proteomes project</description>
 
     <!-- HOW TO BUILD
          To build the project profiles are needed:
@@ -33,9 +33,6 @@
     </licenses>
 
     <properties>
-        <!-- UTF-8 encoding to generate the build-->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <proteomes.db.core.version>1.0.0</proteomes.db.core.version>
         <pride.web.utils.version>1.0</pride.web.utils.version>
         <hibernate.version>4.1.7.Final</hibernate.version>
