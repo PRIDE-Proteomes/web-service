@@ -121,6 +121,8 @@ public class DataRetriever {
         // request a page of results from each repository to check if the query returns results
         // return false if any query does not return results or if there is any exception
 
+        // ToDo: once Solr service is added, request counts from both (DB and Solr) and compare; throw/log data inconsistency exception if not equal
+
         boolean ok;
         Connection connection = null;
         try {
@@ -492,16 +494,20 @@ public class DataRetriever {
     public Statistics getStatistics(Collection<Species> species) {
         Statistics proteomesStats = new Statistics();
 
-        proteomesStats.setProteinCount(proteinRepository.count());
-        proteomesStats.setPeptiformCount(peptideRepository.countPeptiforms());
-        proteomesStats.setSymbolicPeptideCount(peptideRepository.countSymbolicPeptide());
-
         // for each provided species, get the counts
         for (Species s : species) {
             DatasetStats stats = new DatasetStats(s);
-            stats.setProteinCount(proteinRepository.countByTaxid(s.getTaxid()));
-            stats.setPeptiformCount(peptideRepository.countPeptiformsByTaxid(s.getTaxid()));
-            stats.setSymbolicPeptideCount(peptideRepository.countSymbolicPeptideByTaxid(s.getTaxid()));
+            if (s.getTaxid() == 1) {
+                stats.setPeptiformCount(peptideRepository.countPeptiforms());
+                stats.setProteinCount(proteinRepository.count());
+                stats.setUpGroupCount(proteinGroupRepository.countEntryGroups());
+                stats.setGeneGroupCount(proteinGroupRepository.countGeneGroups());
+            } else {
+                stats.setPeptiformCount(peptideRepository.countPeptiformsByTaxid(s.getTaxid()));
+                stats.setProteinCount(proteinRepository.countByTaxid(s.getTaxid()));
+                stats.setUpGroupCount(proteinGroupRepository.countEntryGroupsByTaxid(s.getTaxid()));
+                stats.setGeneGroupCount(proteinGroupRepository.countGeneGroupsByTaxid(s.getTaxid()));
+            }
             proteomesStats.addDatasetStats(stats);
         }
 

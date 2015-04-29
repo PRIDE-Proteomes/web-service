@@ -1,33 +1,51 @@
 package uk.ac.ebi.pride.proteomes.web.service.sample;
 
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 /**
  * @author Florian Reisinger
  * @since 0.4
  */
 //@JsonSerialize(using = SpeciesSerializer.class)
+@ApiModel(value = "Species")
 public enum Species {
 
-    HUMAN(9606, "Homo sapiens (Human)"),
-    MOUSE(10090, "Mus musculus (Mouse)"),
-    RAT(10116, "Rattus norvegicus (Rat)"),
-    ARABIDOPSIS(3702, "Arabidopsis thaliana (Mouse-ear cress)");
+    ALL(1, "All", "All species"),
+    HUMAN(9606, "Human", "Homo sapiens"),
+    MOUSE(10090, "Mouse", "Mus musculus"),
+    RAT(10116, "Rat", "Rattus norvegicus"),
+    ARABIDOPSIS(3702, "Mouse-ear cress", "Arabidopsis thaliana");
 
     public static final String defaultValue = "9606";
 
-    private Species(int taxid, String name) {
+    private Species(int taxid, String commonName, String scientificName) {
         this.taxid = taxid;
-        this.name = name;
+        this.commonName = commonName;
+        this.scientificName = scientificName;
     }
 
+    @ApiModelProperty(value = "taxid")
     private final int taxid;
-    private final String name;
+    @ApiModelProperty(value = "common name")
+    private final String commonName;
+    @ApiModelProperty(value = "scientific name")
+    private final String scientificName;
 
     public int getTaxid() {
         return taxid;
     }
 
+    public String getCommonName() {
+        return commonName;
+    }
+
+    public String getScientificName() {
+        return scientificName;
+    }
+
     public String getName() {
-        return name;
+        return scientificName + " (" + commonName + ")";
     }
 
     public static Species getByTaxid(int taxid) {
@@ -40,7 +58,9 @@ public enum Species {
     }
     public static Species getByName(String speciesName) {
         for (Species species : Species.values()) {
-            if (species.getName().equalsIgnoreCase(speciesName) || species.name().equalsIgnoreCase(speciesName)) {
+            if (species.getName().equalsIgnoreCase(speciesName)
+                    || species.getCommonName().equalsIgnoreCase(speciesName)
+                    || species.getScientificName().equalsIgnoreCase(speciesName)) {
                 return species;
             }
         }
@@ -61,7 +81,7 @@ public enum Species {
     public String toString() {
         return "Species{" +
                 "taxid=" + taxid +
-                ", name='" + name + '\'' +
+                ", name='" + getName() + '\'' +
                 '}';
     }
 }

@@ -9,32 +9,37 @@ import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
  * @author Florian Reisinger
  * @since 0.1
  */
+@SuppressWarnings("unused")
 @ApiModel(value = "DatasetStats", description = "Basic statistics about a dataset (e.g. per species)")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatasetStats {
 
-    @ApiModelProperty(value = "the species (taxon id) defining this dataset")
+    @ApiModelProperty(value = "species taxon id defining the dataset (1 = all species)")
     private int taxid;
-    @ApiModelProperty(value = "the species name")
-    private String speciesName;
-    @ApiModelProperty(value = "the number of proteins belonging to this dataset")
+    @ApiModelProperty(value = "common species name")
+    private String commonName;
+    @ApiModelProperty(value = "scientific species name")
+    private String scientificName;
+    @ApiModelProperty(value = "number of proteins in the dataset")
     private long proteinCount;
-    @ApiModelProperty(value = "the number of peptiforms belonging to this dataset")
+    @ApiModelProperty(value = "number of peptiforms in the dataset")
     private long peptiformCount;
-    @ApiModelProperty(value = "the number of unique sequences belonging to this dataset")
-    private long symbolicPeptideCount;
+    @ApiModelProperty(value = "number of UniProt Entry groups in the dataset")
+    private long upGroupCount;
+    @ApiModelProperty(value = "number of gene groups in the dataset")
+    private long geneGroupCount;
 
     public DatasetStats() {
     }
 
     public DatasetStats(int taxid) {
-        this.taxid = taxid;
-        this.speciesName = Species.getByTaxid(taxid).getName();
+        this(Species.getByTaxid(taxid));
     }
 
     public DatasetStats(Species s) {
         this.taxid = s.getTaxid();
-        this.speciesName = s.getName();
+        this.scientificName = s.getScientificName();
+        this.commonName = s.getCommonName();
     }
 
     public int getTaxid() {
@@ -45,12 +50,20 @@ public class DatasetStats {
         this.taxid = taxid;
     }
 
-    public String getSpeciesName() {
-        return speciesName;
+    public String getCommonName() {
+        return commonName;
     }
 
-    public void setSpeciesName(String speciesName) {
-        this.speciesName = speciesName;
+    public void setCommonName(String commonName) {
+        this.commonName = commonName;
+    }
+
+    public String getScientificName() {
+        return scientificName;
+    }
+
+    public void setScientificName(String scientificName) {
+        this.scientificName = scientificName;
     }
 
     public long getProteinCount() {
@@ -69,11 +82,19 @@ public class DatasetStats {
         this.peptiformCount = peptiformCount;
     }
 
-    public long getSymbolicPeptideCount() {
-        return symbolicPeptideCount;
+    public long getUpGroupCount() {
+        return upGroupCount;
     }
 
-    public void setSymbolicPeptideCount(long symbolicPeptideCount) {
-        this.symbolicPeptideCount = symbolicPeptideCount;
+    public void setUpGroupCount(long upGroupCount) {
+        this.upGroupCount = upGroupCount;
+    }
+
+    public long getGeneGroupCount() {
+        return geneGroupCount;
+    }
+
+    public void setGeneGroupCount(long geneGroupCount) {
+        this.geneGroupCount = geneGroupCount;
     }
 }

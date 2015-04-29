@@ -33,11 +33,11 @@
     </licenses>
 
     <properties>
-        <proteomes.db.core.version>1.0.0</proteomes.db.core.version>
+        <proteomes.db.core.version>1.0.2-SNAPSHOT</proteomes.db.core.version>
         <pride.web.utils.version>1.0</pride.web.utils.version>
         <hibernate.version>4.1.7.Final</hibernate.version>
         <commons.dbcp.version>1.4</commons.dbcp.version>
-        <swagger.springmvc.version>0.8.6</swagger.springmvc.version>
+        <swagger.springmvc.version>0.8.8</swagger.springmvc.version>
         <spring.version>4.1.0.RC1</spring.version>
     </properties>
 
@@ -69,6 +69,7 @@
                             <port>9190</port>
                         </connector>
                     </connectors>
+                    <stopPort>19190</stopPort>
                 </configuration>
             </plugin>
         </plugins>
