@@ -26,7 +26,7 @@ public class Statistics {
         this.datasetStatistics = new TreeSet<DatasetStats>(new Comparator<DatasetStats>() {
             @Override
             public int compare(DatasetStats o1, DatasetStats o2) {
-                return Integer.compare(o1.getTaxid(), o2.getTaxid());
+                return (o1.getScientificName().compareToIgnoreCase(o2.getScientificName()));
             }
         });
     }
