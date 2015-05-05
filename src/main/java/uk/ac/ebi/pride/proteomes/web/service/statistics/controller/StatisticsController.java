@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
+import uk.ac.ebi.pride.proteomes.web.service.statistics.DatasetStats;
 import uk.ac.ebi.pride.proteomes.web.service.statistics.Statistics;
 import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Florian Reisinger
@@ -39,12 +44,46 @@ public class StatisticsController {
         long hoursSinceUpdate = (System.currentTimeMillis() - lastStatsUpdate) / (3600000);
         // update the stats if we have no values yet, or every ~ 24 hours
         if (statisticsCache == null || hoursSinceUpdate > 24) {
-            statisticsCache = dataRetriever.getStatistics(dataRetriever.getSpecies());
+            List<Species> speciesList;
+//            speciesList = dataRetriever.getSpecies(); // all currently supported species
+            speciesList = Arrays.asList(Species.values()); // all available species
+            statisticsCache = generateStats(speciesList);
             lastStatsUpdate = System.currentTimeMillis();
             logger.info("Statistics updated!");
         }
 
         return statisticsCache;
+    }
+
+    private Statistics generateStats(List<Species> species) {
+        // retrieve the species specific statistics
+        Statistics tempStats = dataRetriever.getStatistics(species);
+
+        // generate total counts for the retrieved species
+        // (note: this may not be all available species)
+        long peptiformCnt = 0;
+        long proteinCnt = 0;
+        long upGroupCnt = 0;
+        long geneGroupCnt = 0;
+        for (DatasetStats stats : tempStats.getDatasetStatistics()) {
+            peptiformCnt += stats.getPeptiformCount();
+            proteinCnt += stats.getProteinCount();
+            upGroupCnt += stats.getUpGroupCount();
+            geneGroupCnt += stats.getGeneGroupCount();
+        }
+        // add the total counts as new DatasetStats
+        DatasetStats allStats = new DatasetStats();
+        allStats.setTaxid(1);
+        allStats.setCommonName("All");
+        allStats.setScientificName("aggregated statistics");
+        allStats.setPeptiformCount(peptiformCnt);
+        allStats.setProteinCount(proteinCnt);
+        allStats.setUpGroupCount(upGroupCnt);
+        allStats.setGeneGroupCount(geneGroupCnt);
+
+        // add the total to the stats
+        tempStats.addDatasetStats(allStats);
+        return tempStats;
     }
 
 

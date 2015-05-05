@@ -11,7 +11,6 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Species")
 public enum Species {
 
-    ALL(1, "All", "All species"),
     HUMAN(9606, "Human", "Homo sapiens"),
     MOUSE(10090, "Mouse", "Mus musculus"),
     RAT(10116, "Rat", "Rattus norvegicus"),

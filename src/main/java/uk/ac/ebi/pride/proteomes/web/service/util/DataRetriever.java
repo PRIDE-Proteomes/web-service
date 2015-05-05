@@ -41,6 +41,15 @@ public class DataRetriever {
 
     public static final Logger logger = LoggerFactory.getLogger(DataRetriever.class);
 
+    private static final List<Species> supportedSpecies;
+    static {
+        supportedSpecies = new ArrayList<Species>(4);
+        supportedSpecies.add(Species.HUMAN);
+        supportedSpecies.add(Species.MOUSE);
+        supportedSpecies.add(Species.RAT);
+        supportedSpecies.add(Species.ARABIDOPSIS);
+    }
+
     @Autowired
     PeptideRepository peptideRepository;
     @Autowired
@@ -497,17 +506,11 @@ public class DataRetriever {
         // for each provided species, get the counts
         for (Species s : species) {
             DatasetStats stats = new DatasetStats(s);
-            if (s.getTaxid() == 1) {
-                stats.setPeptiformCount(peptideRepository.countPeptiforms());
-                stats.setProteinCount(proteinRepository.count());
-                stats.setUpGroupCount(proteinGroupRepository.countEntryGroups());
-                stats.setGeneGroupCount(proteinGroupRepository.countGeneGroups());
-            } else {
-                stats.setPeptiformCount(peptideRepository.countPeptiformsByTaxid(s.getTaxid()));
-                stats.setProteinCount(proteinRepository.countByTaxid(s.getTaxid()));
-                stats.setUpGroupCount(proteinGroupRepository.countEntryGroupsByTaxid(s.getTaxid()));
-                stats.setGeneGroupCount(proteinGroupRepository.countGeneGroupsByTaxid(s.getTaxid()));
-            }
+            stats.setProteinCount(proteinRepository.countByTaxid(s.getTaxid()));
+            stats.setPeptiformCount(peptideRepository.countPeptiformsByTaxid(s.getTaxid()));
+            stats.setUpGroupCount(peptideRepository.countSymbolicPeptideByTaxid(s.getTaxid()));
+            stats.setUpGroupCount(proteinGroupRepository.countEntryGroupsByTaxid(s.getTaxid()));
+            stats.setGeneGroupCount(proteinGroupRepository.countGeneGroupsByTaxid(s.getTaxid()));
             proteomesStats.addDatasetStats(stats);
         }
 
@@ -516,7 +519,9 @@ public class DataRetriever {
 
     public List<Species> getSpecies() {
         List<Species> list = new ArrayList<Species>();
-        list.addAll(Arrays.asList(Species.values()));
+//        list.addAll(Arrays.asList(Species.values()));
+        // limit to supported species
+        list.addAll(supportedSpecies);
         return list;
     }
 
