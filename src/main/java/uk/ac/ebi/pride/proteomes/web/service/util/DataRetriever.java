@@ -44,10 +44,10 @@ public class DataRetriever {
     private static final List<Species> supportedSpecies;
     static {
         supportedSpecies = new ArrayList<Species>(4);
-        supportedSpecies.add(Species.HUMAN);
-        supportedSpecies.add(Species.MOUSE);
-        supportedSpecies.add(Species.RAT);
-        supportedSpecies.add(Species.ARABIDOPSIS);
+        supportedSpecies.add(Species.HOMO_SAPIENS);
+        supportedSpecies.add(Species.MUS_MUSCULUS);
+        supportedSpecies.add(Species.RATTUS_NORVEGICUS);
+        supportedSpecies.add(Species.ARABIDOPSIS_THALIANA);
     }
 
     @Autowired

@@ -15,7 +15,6 @@ import uk.ac.ebi.pride.proteomes.web.service.statistics.DatasetStats;
 import uk.ac.ebi.pride.proteomes.web.service.statistics.Statistics;
 import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,8 +44,8 @@ public class StatisticsController {
         // update the stats if we have no values yet, or every ~ 24 hours
         if (statisticsCache == null || hoursSinceUpdate > 24) {
             List<Species> speciesList;
-//            speciesList = dataRetriever.getSpecies(); // all currently supported species
-            speciesList = Arrays.asList(Species.values()); // all available species
+            speciesList = dataRetriever.getSpecies(); // all currently supported species
+//            speciesList = Arrays.asList(Species.values()); // all available species
             statisticsCache = generateStats(speciesList);
             lastStatsUpdate = System.currentTimeMillis();
             logger.info("Statistics updated!");
