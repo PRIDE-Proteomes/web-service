@@ -20,14 +20,20 @@ public class DatasetStats {
     private String commonName;
     @ApiModelProperty(value = "scientific species name")
     private String scientificName;
-    @ApiModelProperty(value = "number of proteins in the dataset")
-    private long proteinCount;
     @ApiModelProperty(value = "number of peptiforms in the dataset")
     private long peptiformCount;
-    @ApiModelProperty(value = "number of UniProt Entry groups in the dataset")
-    private long upGroupCount;
-    @ApiModelProperty(value = "number of gene groups in the dataset")
-    private long geneGroupCount;
+    @ApiModelProperty(value = "number of mapped proteins in the dataset")
+    private long mappedProteinCount;
+    @ApiModelProperty(value = "number of mapped UniProt Entry groups in the dataset")
+    private long mappedUpGroupCount;
+    @ApiModelProperty(value = "number of mapped gene groups in the dataset")
+    private long mappedGeneGroupCount;
+    @ApiModelProperty(value = "total of proteins in the dataset")
+    private long totalProteinCount;
+    @ApiModelProperty(value = "total of UniProt Entry groups in the dataset")
+    private long totalUpGroupCount;
+    @ApiModelProperty(value = "total of gene groups in the dataset")
+    private long totalGeneGroupCount;
 
     public DatasetStats() {
     }
@@ -66,12 +72,12 @@ public class DatasetStats {
         this.scientificName = scientificName;
     }
 
-    public long getProteinCount() {
-        return proteinCount;
+    public long getMappedProteinCount() {
+        return mappedProteinCount;
     }
 
-    public void setProteinCount(long proteinCount) {
-        this.proteinCount = proteinCount;
+    public void setMappedProteinCount(long mappedProteinCount) {
+        this.mappedProteinCount = mappedProteinCount;
     }
 
     public long getPeptiformCount() {
@@ -82,19 +88,43 @@ public class DatasetStats {
         this.peptiformCount = peptiformCount;
     }
 
-    public long getUpGroupCount() {
-        return upGroupCount;
+    public long getMappedUpGroupCount() {
+        return mappedUpGroupCount;
     }
 
-    public void setUpGroupCount(long upGroupCount) {
-        this.upGroupCount = upGroupCount;
+    public void setMappedUpGroupCount(long mappedUpGroupCount) {
+        this.mappedUpGroupCount = mappedUpGroupCount;
     }
 
-    public long getGeneGroupCount() {
-        return geneGroupCount;
+    public long getMappedGeneGroupCount() {
+        return mappedGeneGroupCount;
     }
 
-    public void setGeneGroupCount(long geneGroupCount) {
-        this.geneGroupCount = geneGroupCount;
+    public void setMappedGeneGroupCount(long mappedGeneGroupCount) {
+        this.mappedGeneGroupCount = mappedGeneGroupCount;
+    }
+
+    public long getTotalProteinCount() {
+        return totalProteinCount;
+    }
+
+    public void setTotalProteinCount(long totalProteinCount) {
+        this.totalProteinCount = totalProteinCount;
+    }
+
+    public long getTotalUpGroupCount() {
+        return totalUpGroupCount;
+    }
+
+    public void setTotalUpGroupCount(long totalUpGroupCount) {
+        this.totalUpGroupCount = totalUpGroupCount;
+    }
+
+    public long getTotalGeneGroupCount() {
+        return totalGeneGroupCount;
+    }
+
+    public void setTotalGeneGroupCount(long totalGeneGroupCount) {
+        this.totalGeneGroupCount = totalGeneGroupCount;
     }
 }

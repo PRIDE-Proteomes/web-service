@@ -108,7 +108,7 @@ public class ProteinController  extends ProteomesService {
             @RequestParam(value = "mod", required = false, defaultValue = Modification.defaultValue) String modName
     ) {
 
-        logger.info("Protein: getProteinCount request");
+        logger.info("Protein: getMappedProteinCount request");
         Species species = Species.getFromString(speciesName);
         if (species == null) {
             // ToDo: proper error return!

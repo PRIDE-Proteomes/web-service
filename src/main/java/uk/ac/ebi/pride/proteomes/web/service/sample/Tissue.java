@@ -11,6 +11,8 @@ public enum Tissue {
     // For example use ontology accessions. Default to BTO.
     // Provide a string to 'known' type mapping function
 
+    //select UPPER(REPLACE(REPLACE(CV_NAME, ' ', '_'), '-','_')) || '("' || CV_TERM ||'", "' || CV_NAME || '"),' AS TISSUES from CV_PARAM WHERE CV_TYPE='TISSUE' ORDER BY TISSUES;
+
     ALVEOLAR_BONE("BTO:0001383", "alveolar bone"),
     ANTERIOR_SILK_GLAND("BTO:0001795", "anterior silk gland"),
     AORTA_THORACICA("BTO:0000157", "aorta thoracica"),

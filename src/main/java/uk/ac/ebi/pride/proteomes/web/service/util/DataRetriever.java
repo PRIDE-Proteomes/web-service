@@ -506,11 +506,13 @@ public class DataRetriever {
         // for each provided species, get the counts
         for (Species s : species) {
             DatasetStats stats = new DatasetStats(s);
-            stats.setProteinCount(proteinRepository.countByTaxid(s.getTaxid()));
             stats.setPeptiformCount(peptideRepository.countPeptiformsByTaxid(s.getTaxid()));
-            stats.setUpGroupCount(peptideRepository.countSymbolicPeptideByTaxid(s.getTaxid()));
-            stats.setUpGroupCount(proteinGroupRepository.countEntryGroupsByTaxid(s.getTaxid()));
-            stats.setGeneGroupCount(proteinGroupRepository.countGeneGroupsByTaxid(s.getTaxid()));
+            stats.setMappedProteinCount(peptideProteinRepository.countMappedProteinsByTaxId(s.getTaxid()));
+            stats.setMappedUpGroupCount(peptideGroupRepository.countMappedUPEntriesByTaxId(s.getTaxid()));
+            stats.setMappedGeneGroupCount(peptideGroupRepository.countMappedGenesByTaxId(s.getTaxid()));
+            stats.setTotalProteinCount(proteinRepository.countByTaxid(s.getTaxid()));
+            stats.setTotalUpGroupCount(proteinGroupRepository.countEntryGroupsByTaxid(s.getTaxid()));
+            stats.setTotalGeneGroupCount(proteinGroupRepository.countGeneGroupsByTaxid(s.getTaxid()));
             proteomesStats.addDatasetStats(stats);
         }
 

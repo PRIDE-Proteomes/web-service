@@ -61,14 +61,20 @@ public class StatisticsController {
         // generate total counts for the retrieved species
         // (note: this may not be all available species)
         long peptiformCnt = 0;
-        long proteinCnt = 0;
-        long upGroupCnt = 0;
-        long geneGroupCnt = 0;
+        long mappedProteinCnt = 0;
+        long mappedUpGroupCnt = 0;
+        long mappedGeneGroupCnt = 0;
+        long totalProteinCnt = 0;
+        long totalUpGroupCnt = 0;
+        long totalGeneGroupCnt = 0;
         for (DatasetStats stats : tempStats.getDatasetStatistics()) {
             peptiformCnt += stats.getPeptiformCount();
-            proteinCnt += stats.getProteinCount();
-            upGroupCnt += stats.getUpGroupCount();
-            geneGroupCnt += stats.getGeneGroupCount();
+            mappedProteinCnt += stats.getMappedProteinCount();
+            mappedUpGroupCnt += stats.getMappedUpGroupCount();
+            mappedGeneGroupCnt += stats.getMappedGeneGroupCount();
+            totalProteinCnt += stats.getTotalProteinCount();
+            totalUpGroupCnt += stats.getTotalUpGroupCount();
+            totalGeneGroupCnt += stats.getTotalGeneGroupCount();
         }
         // add the total counts as new DatasetStats
         DatasetStats allStats = new DatasetStats();
@@ -76,9 +82,12 @@ public class StatisticsController {
         allStats.setCommonName("All");
         allStats.setScientificName("aggregated statistics");
         allStats.setPeptiformCount(peptiformCnt);
-        allStats.setProteinCount(proteinCnt);
-        allStats.setUpGroupCount(upGroupCnt);
-        allStats.setGeneGroupCount(geneGroupCnt);
+        allStats.setMappedProteinCount(mappedProteinCnt);
+        allStats.setMappedUpGroupCount(mappedUpGroupCnt);
+        allStats.setMappedGeneGroupCount(mappedGeneGroupCnt);
+        allStats.setTotalProteinCount(totalProteinCnt);
+        allStats.setTotalUpGroupCount(totalUpGroupCnt);
+        allStats.setTotalGeneGroupCount(totalGeneGroupCnt);
 
         // add the total to the stats
         tempStats.addDatasetStats(allStats);
