@@ -48,6 +48,22 @@ public class DataRetriever {
         supportedSpecies.add(Species.MUS_MUSCULUS);
         supportedSpecies.add(Species.RATTUS_NORVEGICUS);
         supportedSpecies.add(Species.ARABIDOPSIS_THALIANA);
+//        supportedSpecies.add(Species.DANIO_RERIO);
+//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE);
+//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE_S288C);
+//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE_YJM789);
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI);
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI_K_12);
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI_O157_H7_STR_EDL933);
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI_O157_H7_STR_TW14359);
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI_STR_K_12_SUBSTR_MG1655);
+//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE);
+//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE_927);
+//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE_972H_);
+//        supportedSpecies.add(Species.DROSOPHILA);
+//        supportedSpecies.add(Species.DROSOPHILA_MELANOGASTER);
+//        supportedSpecies.add(Species.ORYZA_SATIVA);
+
     }
 
     @Autowired
