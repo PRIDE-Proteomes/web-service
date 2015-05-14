@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.proteomes.web.service.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.pride.proteomes.db.core.api.assay.Assay;
+import uk.ac.ebi.pride.proteomes.db.core.api.cluster.Cluster;
 import uk.ac.ebi.pride.proteomes.db.core.api.modification.ModificationLocation;
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptiform;
 import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
@@ -66,6 +67,8 @@ public class ModelConverter {
         if (includeDetails) {
             convertedPeptide.setTissues( convertTissues(peptide.getTissues()) );
             convertedPeptide.setAssays( convertAssays(peptide.getAssays()) );
+            convertedPeptide.setClusters( convertClusters(peptide.getClusters()) );
+
         }
 
         return convertedPeptide;
@@ -93,6 +96,14 @@ public class ModelConverter {
             convertedAssays.add(assay.getAssayAccession());
         }
         return convertedAssays;
+    }
+
+    public static SortedSet<String> convertClusters(Collection<Cluster> clusters) {
+        SortedSet<String> convertedClusters = new TreeSet<String>(new AssayComparator());
+        for (Cluster cluster : clusters) {
+            convertedClusters.add(cluster.getClusterId().toString());
+        }
+        return convertedClusters;
     }
 
     public static SortedSet<ModifiedLocation> convertModificationLocations(Collection<ModificationLocation> modificationLocations) {

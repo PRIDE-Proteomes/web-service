@@ -20,6 +20,7 @@ public class LocatedPeptide extends Peptide  {
         this.setSequence(peptide.getSequence());
         this.setTissues(peptide.getTissues());
         this.setAssays(peptide.getAssays());
+        this.setClusters(peptide.getClusters());
         this.setModifiedLocations(peptide.getModifiedLocations());
     }
 

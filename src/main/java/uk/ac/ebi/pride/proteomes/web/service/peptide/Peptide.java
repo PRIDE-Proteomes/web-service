@@ -37,6 +37,11 @@ public class Peptide implements HasTissues, HasModifications {
     // but needed for the current implementation
     private Set<String> assays;
 
+    @ApiModelProperty(value = "a list of cluster the peptide has been reported in")
+    // this should be deprecated, Proteomes data should be independent of Archive assays/projects
+    // but needed for the current implementation
+    private Set<String> clusters;
+
     public Peptide() {
         this.modifiedLocations = new TreeSet<ModifiedLocation>(new ModifiedLocationComparator());
         this.tissues = new TreeSet<Tissue>();
@@ -99,6 +104,14 @@ public class Peptide implements HasTissues, HasModifications {
 
     public void setAssays(Set<String> assays) {
         this.assays = assays;
+    }
+
+    public Set<String> getClusters() {
+        return clusters;
+    }
+
+    public void setClusters(Set<String> clusters) {
+        this.clusters = clusters;
     }
 
     @Override
