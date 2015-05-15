@@ -25,6 +25,8 @@ public class Protein implements HasTissues, HasModifications {
 
     @ApiModelProperty(value = "the protein's accession")
     private String accession = "";
+    @ApiModelProperty(value = "the protein's associated gene")
+    private String gene = "";
     @ApiModelProperty(value = "the protein's species (taxon id)")
     private int taxonID = -1;
     @ApiModelProperty(value = "the protein's sequence")
@@ -37,6 +39,8 @@ public class Protein implements HasTissues, HasModifications {
     private Set<Tissue> tissues;
     @ApiModelProperty(value = "the protein's reported peptides")
     private Set<LocatedPeptide> peptides;
+    @ApiModelProperty(value = "number of peptides unique to this protein")
+    private int uniquePeptideCount = -1;
     // for web front-end only
     private String coverage; // not used any longer!
     private int[][] regions; // array of coverage regions represented by integer triplets [start pos, length, coverage value]
@@ -53,6 +57,14 @@ public class Protein implements HasTissues, HasModifications {
 
     public void setAccession(String accession) {
         this.accession = accession;
+    }
+
+    public String getGene() {
+        return gene;
+    }
+
+    public void setGene(String gene) {
+        this.gene = gene;
     }
 
     public int getTaxonID() {
@@ -119,6 +131,14 @@ public class Protein implements HasTissues, HasModifications {
 
     public void setPeptides(Set<LocatedPeptide> peptides) {
         this.peptides = peptides;
+    }
+
+    public int getUniquePeptideCount() {
+        return uniquePeptideCount;
+    }
+
+    public void setUniquePeptideCount(int uniquePeptideCount) {
+        this.uniquePeptideCount = uniquePeptideCount;
     }
 
     @Override

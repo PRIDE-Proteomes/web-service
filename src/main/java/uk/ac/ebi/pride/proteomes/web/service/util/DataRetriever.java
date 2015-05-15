@@ -274,7 +274,16 @@ public class DataRetriever {
         uk.ac.ebi.pride.proteomes.web.service.protein.Protein protein = ModelConverter.convertProtein(dbProtein, true);
         if (includeDetails) {
             // find the mapped peptides
-            protein.getPeptides().addAll(this.getProteinPeptides(accession, null, null));
+            List<LocatedPeptide> tmpPepList = this.getProteinPeptides(accession, null, null);
+            protein.getPeptides().addAll(tmpPepList);
+            int uc = 0;
+            for (LocatedPeptide locatedPeptide : tmpPepList) {
+                if (locatedPeptide.getUniqueness() == 1) {
+                    uc++;
+                }
+            }
+            protein.setUniquePeptideCount(uc);
+            logger.info("Peptides unique to the protein: " + uc);
         }
 
         return protein;

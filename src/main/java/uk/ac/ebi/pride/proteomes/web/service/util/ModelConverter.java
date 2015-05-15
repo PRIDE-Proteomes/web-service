@@ -6,6 +6,7 @@ import uk.ac.ebi.pride.proteomes.db.core.api.assay.Assay;
 import uk.ac.ebi.pride.proteomes.db.core.api.cluster.Cluster;
 import uk.ac.ebi.pride.proteomes.db.core.api.modification.ModificationLocation;
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptiform;
+import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.GeneGroup;
 import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
@@ -16,6 +17,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.comparator.AssayComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -39,6 +41,13 @@ public class ModelConverter {
             serviceProtein.setSequence(dbProtein.getSequence());
         }
         serviceProtein.setDescription(dbProtein.getDescription());
+
+        Set<GeneGroup> geneGroups = dbProtein.getGeneGroups();
+        if (geneGroups != null && !geneGroups.isEmpty()) {
+            GeneGroup geneGroup = geneGroups.iterator().next();
+            String geneId = geneGroup.getId();
+            serviceProtein.setGene(geneId);
+        }
 
         // modifications would have to be mapped to protein positions and therefore are
         // retrieved from the protein, rather than being mapped from the peptide level
