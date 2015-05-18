@@ -39,19 +39,29 @@ public class StatisticsController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Statistics getSummary() {
-        // ToDo: maybe there is a better way of updating the cache
+        Statistics result;
         long hoursSinceUpdate = (System.currentTimeMillis() - lastStatsUpdate) / (3600000);
-        // update the stats if we have no values yet, or every ~ 24 hours
-        if (statisticsCache == null || hoursSinceUpdate > 24) {
-            List<Species> speciesList;
-            speciesList = dataRetriever.getSpecies(); // all currently supported species
-//            speciesList = Arrays.asList(Species.values()); // all available species
-            statisticsCache = generateStats(speciesList);
-            lastStatsUpdate = System.currentTimeMillis();
-            logger.info("Statistics updated!");
+
+        if (statisticsCache != null /*&& hoursSinceUpdate < 24*/) {
+            result = statisticsCache;
+            logger.debug("Using stats cache. Hours since last update: "+ hoursSinceUpdate);
+        } else {
+            logger.info("Retrieving statistics");
+            List<Species> speciesList = dataRetriever.getSpecies(); // all currently supported species
+            // List<Species> speciesList = Arrays.asList(Species.values()); // all available species
+
+            result = generateStats(speciesList);
+            // cache the result if it looks ok
+            if ( result != null && result.getSpeciesCount() == speciesList.size() ) {
+                statisticsCache = result;
+                lastStatsUpdate = System.currentTimeMillis();
+            } else {
+                logger.error("Data statistics not complete! Received less species stats for than available species.");
+            }
+
         }
 
-        return statisticsCache;
+        return result;
     }
 
     private Statistics generateStats(List<Species> species) {
