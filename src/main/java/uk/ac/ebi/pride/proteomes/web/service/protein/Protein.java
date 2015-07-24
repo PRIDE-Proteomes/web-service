@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.proteomes.web.service.protein;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+import uk.ac.ebi.pride.proteomes.web.service.feature.Feature;
 import uk.ac.ebi.pride.proteomes.web.service.modification.HasModifications;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.LocatedPeptide;
@@ -39,6 +40,8 @@ public class Protein implements HasTissues, HasModifications {
     private Set<Tissue> tissues;
     @ApiModelProperty(value = "the protein's reported peptides")
     private Set<LocatedPeptide> peptides;
+    @ApiModelProperty(value = "the protein's reported features")
+    private Set<Feature> features;
     @ApiModelProperty(value = "number of peptides unique to this protein")
     private int uniquePeptideCount = -1;
     // for web front-end only
@@ -131,6 +134,14 @@ public class Protein implements HasTissues, HasModifications {
 
     public void setPeptides(Set<LocatedPeptide> peptides) {
         this.peptides = peptides;
+    }
+
+    public Set<Feature> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(Set<Feature> features) {
+        this.features = features;
     }
 
     public int getUniquePeptideCount() {

@@ -15,10 +15,12 @@ import uk.ac.ebi.pride.proteomes.db.core.api.peptide.group.PeptideGroupRepositor
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.protein.PeptideProtein;
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.protein.PeptideProteinRepository;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.ProteinRepository;
+import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.EntryGroup;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroupRepository;
 import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.LocatedPeptide;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
+import uk.ac.ebi.pride.proteomes.web.service.peptide.Uniqueness;
 import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.proteingroup.ProteinGroup;
 import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
@@ -42,6 +44,7 @@ public class DataRetriever {
     public static final Logger logger = LoggerFactory.getLogger(DataRetriever.class);
 
     private static final List<Species> supportedSpecies;
+
     static {
         supportedSpecies = new ArrayList<Species>(4);
         supportedSpecies.add(Species.HOMO_SAPIENS);
@@ -157,13 +160,13 @@ public class DataRetriever {
             ok = !connection.isClosed(); // after retrieving of the meta-data we should have a working connection!
         } catch (SQLException e) {
             ok = false;
-            logger.error("SQLException during service check." , e);
+            logger.error("SQLException during service check.", e);
         } finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    logger.error("Failed to close connection during service check." , e);
+                    logger.error("Failed to close connection during service check.", e);
                 }
             }
         }
@@ -208,6 +211,7 @@ public class DataRetriever {
         }
         return serviceGroup;
     }
+
     private List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> findPeptideByProtein(String accession, boolean uniqueOnly) {
         List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> peptides = new ArrayList<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide>();
 
@@ -274,7 +278,7 @@ public class DataRetriever {
         uk.ac.ebi.pride.proteomes.web.service.protein.Protein protein = ModelConverter.convertProtein(dbProtein, true);
         if (includeDetails) {
             // find the mapped peptides
-            List<LocatedPeptide> tmpPepList = this.getProteinPeptides(accession, null, null);
+            List<LocatedPeptide> tmpPepList = this.getProteinPeptides(dbProtein.getPeptides(), null, null);
             protein.getPeptides().addAll(tmpPepList);
             int uc = 0;
             for (LocatedPeptide locatedPeptide : tmpPepList) {
@@ -329,6 +333,7 @@ public class DataRetriever {
 
         return list;
     }
+
     @Transactional(readOnly = true)
     public Long countProteins(int species, String tissueName, String modName) {
         long resultCount;
@@ -435,7 +440,7 @@ public class DataRetriever {
         if (tissueName.equals(Tissue.defaultValue) && modName.equals(Modification.defaultValue)) {
             dbPeptides = peptideRepository.findAllSymbolicPeptideByTaxid(species, pageRequest);
         } else if (!tissueName.equals(Tissue.defaultValue) && modName.equals(Modification.defaultValue)) {
-            dbPeptides = peptideRepository.findAllSymbolicPeptideByTaxidAndTissue(species, tissueName,pageRequest);
+            dbPeptides = peptideRepository.findAllSymbolicPeptideByTaxidAndTissue(species, tissueName, pageRequest);
         } else if (tissueName.equals(Tissue.defaultValue) && !modName.equals(Modification.defaultValue)) {
             dbPeptides = peptideRepository.findAllSymbolicPeptideByTaxidAndModification(species, modName, pageRequest);
         } else {
@@ -479,13 +484,41 @@ public class DataRetriever {
         //retrieve all peptide-protein matches from the protein record
         Collection<PeptideProtein> ppMatches = peptideProteinRepository.findByProteinProteinAccession(acc);
 
+        return getProteinPeptides(ppMatches, tissueName, modName);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LocatedPeptide> getProteinPeptides(Collection<PeptideProtein> ppMatches, String tissueName, String modName) {
+        List<LocatedPeptide> list = new ArrayList<LocatedPeptide>();
+        //retrieve all peptide-protein matches from the protein record
+//        Collection<PeptideProtein> ppMatches = peptideProteinRepository.findByProteinProteinAccession(acc);
+
         for (PeptideProtein ppMatch : ppMatches) {
             uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide dbPeptide = ppMatch.getPeptide();
 
             LocatedPeptide lPeptide = new LocatedPeptide(ModelConverter.convertPeptide(dbPeptide, true));
 
-            if (ppMatch.getUniqueness() != null) {
-                lPeptide.setUniqueness(ppMatch.getUniqueness());
+            if (ppMatch.getStartPosition() != null) {
+                lPeptide.setPosition(ppMatch.getStartPosition());
+            }
+            if (ppMatch.getPeptide().getProteins() != null) {
+                for (PeptideProtein peptideProtein : ppMatch.getPeptide().getProteins()) {
+                    lPeptide.getSharedProteins().add(peptideProtein.getProteinAccession());
+                }
+            }
+            if (ppMatch.getPeptide().getProteinGroups() != null) {
+                for (PeptideGroup peptideGroup : ppMatch.getPeptide().getProteinGroups()) {
+                    final uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroup proteinGroup = peptideGroup.getProteinGroup();
+                    if (proteinGroup != null) {
+                        if (proteinGroup instanceof EntryGroup) {
+                            lPeptide.getSharedUpEntries().add(proteinGroup.getId());
+                        } else {
+                            lPeptide.getSharedGenes().add(proteinGroup.getId());
+                        }
+                    }
+
+                }
+                lPeptide.setPosition(ppMatch.getStartPosition());
             }
             if (ppMatch.getStartPosition() != null) {
                 lPeptide.setPosition(ppMatch.getStartPosition());
@@ -496,10 +529,28 @@ public class DataRetriever {
                 list.add(lPeptide);
             }
 
+
+            lPeptide.setUniqueness(calculateUniquenessLevel(lPeptide));
+
+
         }
         logger.info("After filtering " + list.size() + " (of " + ppMatches.size() + ") peptides remain.");
 
         return list;
+    }
+
+    private Integer calculateUniquenessLevel(LocatedPeptide peptide) {
+        if (peptide.getSharedProteins().size() == 1){
+            return Uniqueness.UNIQUE_TO_PROTEIN.ordinal();
+        }
+        else if(peptide.getSharedUpEntries().size() == 1){
+            return Uniqueness.UNIQUE_TO_UP_ENTRY.ordinal();
+        }
+        else if(peptide.getSharedGenes().size() == 1){
+            return Uniqueness.UNIQUE_TO_GENE.ordinal();
+        }
+
+        return Uniqueness.NON_UNIQUE.ordinal();
     }
 
     @Transactional(readOnly = true)
@@ -557,6 +608,7 @@ public class DataRetriever {
         list.addAll(Arrays.asList(Tissue.values()));
         return list;
     }
+
     // ToDo: combine getTissues methods?
     public Set<Tissue> getTissues(Species species) {
         // ToDo: perhaps solve in a more elegant way with spring data
@@ -574,16 +626,16 @@ public class DataRetriever {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String tissueAccession = rs.getString("cv_term");
-                tissues.add( Tissue.getTissue(tissueAccession) );
+                tissues.add(Tissue.getTissue(tissueAccession));
             }
         } catch (SQLException e) {
-            logger.error("SQLException during service check." , e);
+            logger.error("SQLException during service check.", e);
         } finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    logger.error("Failed to close connection during service check." , e);
+                    logger.error("Failed to close connection during service check.", e);
                 }
             }
         }
@@ -606,16 +658,16 @@ public class DataRetriever {
                 tissueCount = rs.getInt(1);
                 logger.info("Tissue count for species " + species.getName() + " : " + tissueCount);
             } else {
-                logger.error("Could not retrieve tissue count for species: " +species.getName());
+                logger.error("Could not retrieve tissue count for species: " + species.getName());
             }
         } catch (SQLException e) {
-            logger.error("SQLException during service check." , e);
+            logger.error("SQLException during service check.", e);
         } finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    logger.error("Failed to close connection during service check." , e);
+                    logger.error("Failed to close connection during service check.", e);
                 }
             }
         }

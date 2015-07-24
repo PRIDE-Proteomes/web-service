@@ -7,6 +7,7 @@ import uk.ac.ebi.pride.proteomes.db.core.api.cluster.Cluster;
 import uk.ac.ebi.pride.proteomes.db.core.api.modification.ModificationLocation;
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptiform;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.GeneGroup;
+import uk.ac.ebi.pride.proteomes.web.service.feature.Feature;
 import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
@@ -14,6 +15,7 @@ import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.proteingroup.ProteinGroup;
 import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.AssayComparator;
+import uk.ac.ebi.pride.proteomes.web.service.util.comparator.FeatureComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
 
 import java.util.Collection;
@@ -53,6 +55,7 @@ public class ModelConverter {
         // retrieved from the protein, rather than being mapped from the peptide level
         serviceProtein.setModifiedLocations(convertModificationLocations(dbProtein.getModificationLocations()));
         serviceProtein.setTissues(convertTissues(dbProtein.getTissues()));
+        serviceProtein.setFeatures(convertFeatures(dbProtein.getFeatures()));
 
         return serviceProtein;
     }
@@ -128,6 +131,20 @@ public class ModelConverter {
         }
 
         return convertedMods;
+    }
+
+    public static SortedSet<Feature> convertFeatures(Collection<uk.ac.ebi.pride.proteomes.db.core.api.feature.Feature> features) {
+        SortedSet<Feature> convertedFeatures = new TreeSet<Feature>(new FeatureComparator());
+        for (uk.ac.ebi.pride.proteomes.db.core.api.feature.Feature feature : features) {
+            Feature  serviceFeature = new Feature();
+            serviceFeature.setId(feature.getFeatureId());
+            serviceFeature.setStart(feature.getStartPosition());
+            serviceFeature.setEnd(feature.getEndPosition());
+            serviceFeature.setType(feature.getFeatureType().getCvName());
+
+            convertedFeatures.add(serviceFeature);
+        }
+        return convertedFeatures;
     }
 
     public static ProteinGroup convertProteinGroup(uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroup dbGroup) {

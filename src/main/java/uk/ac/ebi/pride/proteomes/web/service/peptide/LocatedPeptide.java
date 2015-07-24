@@ -2,6 +2,9 @@ package uk.ac.ebi.pride.proteomes.web.service.peptide;
 
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Florian Reisinger
  * @since 0.1
@@ -10,8 +13,18 @@ public class LocatedPeptide extends Peptide  {
 
     @ApiModelProperty(value = "the position of the peptide on the mapped protein")
     private Integer position = -1;
-    @ApiModelProperty(value = "count if the peptide is unique to the protein (unique == 1)")
-    private Integer uniqueness = -1;
+
+    @ApiModelProperty(value = "represent the most restricted uniqueness level")
+    private Integer uniqueness = Uniqueness.NON_UNIQUE.ordinal() ;
+
+    @ApiModelProperty(value = "protein accessions shared with this peptide")
+    private Set<String> sharedProteins = new HashSet<String>();
+
+    @ApiModelProperty(value = "protein entry accessions shared with this peptide")
+    private Set<String> sharedUpEntries = new HashSet<String>();
+
+    @ApiModelProperty(value = "gene accessions shared with this peptide")
+    private Set<String> sharedGenes = new HashSet<String>();
 
     public LocatedPeptide(Peptide peptide) {
         this.setId(peptide.getId());
@@ -38,6 +51,30 @@ public class LocatedPeptide extends Peptide  {
 
     public void setUniqueness(Integer uniqueness) {
         this.uniqueness = uniqueness;
+    }
+
+    public Set<String> getSharedProteins() {
+        return sharedProteins;
+    }
+
+    public void setSharedProteins(Set<String> sharedProteins) {
+        this.sharedProteins = sharedProteins;
+    }
+
+    public Set<String> getSharedUpEntries() {
+        return sharedUpEntries;
+    }
+
+    public void setSharedUpEntries(Set<String> sharedUpEntries) {
+        this.sharedUpEntries = sharedUpEntries;
+    }
+
+    public Set<String> getSharedGenes() {
+        return sharedGenes;
+    }
+
+    public void setSharedGenes(Set<String> sharedGenes) {
+        this.sharedGenes = sharedGenes;
     }
 
     @Override
