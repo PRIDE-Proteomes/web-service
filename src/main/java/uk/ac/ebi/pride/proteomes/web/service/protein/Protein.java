@@ -3,12 +3,12 @@ package uk.ac.ebi.pride.proteomes.web.service.protein;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.feature.Feature;
 import uk.ac.ebi.pride.proteomes.web.service.modification.HasModifications;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.LocatedPeptide;
 import uk.ac.ebi.pride.proteomes.web.service.sample.HasTissues;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.LocatedPeptideComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
 
@@ -43,7 +43,14 @@ public class Protein implements HasTissues, HasModifications {
     @ApiModelProperty(value = "the protein's reported features")
     private Set<Feature> features;
     @ApiModelProperty(value = "number of peptides unique to this protein")
-    private int uniquePeptideCount = -1;
+    private int uniquePeptideToProteinCount = -1;
+    @ApiModelProperty(value = "number of peptides unique to isoforms of protein")
+    private int uniquePeptideToIsoformCount = -1;
+    @ApiModelProperty(value = "number of peptides unique to proteins encoded by the same gene")
+    private int uniquePeptideToGeneCount = -1;
+    @ApiModelProperty(value = "number of shared peptides")
+    private int nonUniquePeptidesCount = -1;
+
     // for web front-end only
     private String coverage; // not used any longer!
     private int[][] regions; // array of coverage regions represented by integer triplets [start pos, length, coverage value]
@@ -144,12 +151,36 @@ public class Protein implements HasTissues, HasModifications {
         this.features = features;
     }
 
-    public int getUniquePeptideCount() {
-        return uniquePeptideCount;
+    public int getUniquePeptideToProteinCount() {
+        return uniquePeptideToProteinCount;
     }
 
-    public void setUniquePeptideCount(int uniquePeptideCount) {
-        this.uniquePeptideCount = uniquePeptideCount;
+    public void setUniquePeptideToProteinCount(int uniquePeptideToProteinCount) {
+        this.uniquePeptideToProteinCount = uniquePeptideToProteinCount;
+    }
+
+    public int getUniquePeptideToIsoformCount() {
+        return uniquePeptideToIsoformCount;
+    }
+
+    public void setUniquePeptideToIsoformCount(int uniquePeptideToIsoformCount) {
+        this.uniquePeptideToIsoformCount = uniquePeptideToIsoformCount;
+    }
+
+    public int getUniquePeptideToGeneCount() {
+        return uniquePeptideToGeneCount;
+    }
+
+    public void setUniquePeptideToGeneCount(int uniquePeptideToGeneCount) {
+        this.uniquePeptideToGeneCount = uniquePeptideToGeneCount;
+    }
+
+    public int getNonUniquePeptidesCount() {
+        return nonUniquePeptidesCount;
+    }
+
+    public void setNonUniquePeptidesCount(int nonUniquePeptidesCount) {
+        this.nonUniquePeptidesCount = nonUniquePeptidesCount;
     }
 
     @Override

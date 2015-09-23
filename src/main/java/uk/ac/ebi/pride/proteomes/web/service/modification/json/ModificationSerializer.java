@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.proteomes.web.service.modification.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
 
 import java.io.IOException;
 

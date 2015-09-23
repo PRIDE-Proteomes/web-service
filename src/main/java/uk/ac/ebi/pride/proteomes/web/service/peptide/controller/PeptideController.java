@@ -6,12 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.LocatedPeptide;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.PeptideList;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.LocatedPeptideComparator;
 

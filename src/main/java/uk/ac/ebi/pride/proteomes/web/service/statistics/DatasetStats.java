@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.proteomes.web.service.statistics;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
 
 /**
  * @author Florian Reisinger

@@ -17,17 +17,18 @@ import uk.ac.ebi.pride.proteomes.db.core.api.peptide.protein.PeptideProteinRepos
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.ProteinRepository;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.EntryGroup;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroupRepository;
-import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.Uniqueness;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.LocatedPeptide;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
-import uk.ac.ebi.pride.proteomes.web.service.peptide.Uniqueness;
 import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.proteingroup.ProteinGroup;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.statistics.DatasetStats;
 import uk.ac.ebi.pride.proteomes.web.service.statistics.Statistics;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.UniprotAccessionComparator;
+import uk.ac.ebi.pride.proteomes.web.service.util.param.ParamHelper;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -99,50 +100,18 @@ public class DataRetriever {
         }
 
         // check a tissue, if selected
-        if (!Tissue.containsTissue(peptide, tissueName)) {
+        if (!ParamHelper.containsTissue(peptide, tissueName)) {
             return false;
         }
 
         // check a modification, if selected
-        if (!Modification.containsModification(peptide, modName)) {
+        if (!ParamHelper.containsModification(peptide, modName)) {
             return false;
         }
 
         // peptide passed all checks
         return true;
     }
-
-/**
-    public boolean isAllOKDetailed() {
-        Pageable pageable = new PageRequest(0, 5); // we request the first page with few entries
-        try {
-            if (peptideRepository.findAll(pageable).iterator().next() == null) {
-                return false;
-            }
-
-            if (proteinRepository.findAll(pageable).iterator().next() == null) {
-                return false;
-            }
-
-            if (proteinGroupRepository.findAll(pageable).iterator().next() == null) {
-                return false;
-            }
-
-            if (peptideProteinRepository.findAll(pageable).iterator().next() == null) {
-                return false;
-            }
-
-            if (peptideGroupRepository.findAll(pageable).iterator().next() == null) {
-                return false;
-            }
-        } catch (Exception e) {
-            logger.error("Error trying to retrieve data for service check.");
-            return false;
-        }
-
-        return true;
-    }
-*/
 
     public boolean isAllOK() {
 
@@ -278,16 +247,39 @@ public class DataRetriever {
         uk.ac.ebi.pride.proteomes.web.service.protein.Protein protein = ModelConverter.convertProtein(dbProtein, true);
         if (includeDetails) {
             // find the mapped peptides
-            List<LocatedPeptide> tmpPepList = this.getProteinPeptides(dbProtein.getPeptides(), null, null);
+            List<LocatedPeptide> tmpPepList = getProteinPeptides(dbProtein.getPeptides(), null, null);
             protein.getPeptides().addAll(tmpPepList);
             int uc = 0;
+            int ic = 0;
+            int gc = 0;
+            int sc = 0;
             for (LocatedPeptide locatedPeptide : tmpPepList) {
-                if (locatedPeptide.getUniqueness() == 1) {
-                    uc++;
+                switch (locatedPeptide.getUniqueness()) {
+                    case 0:
+                        sc++;
+                        break;
+                    case 1:
+                        uc++;
+                        break;
+                    case 2:
+                        ic++;
+                        break;
+                    case 3:
+                        gc++;
+                        break;
+                    default:
+                        logger.warn("No uniqueness level registered: " + locatedPeptide.getUniqueness());
                 }
             }
-            protein.setUniquePeptideCount(uc);
+            protein.setUniquePeptideToProteinCount(uc);
+            protein.setUniquePeptideToIsoformCount(ic);
+            protein.setUniquePeptideToGeneCount(gc);
+            protein.setNonUniquePeptidesCount(sc);
             logger.info("Peptides unique to the protein: " + uc);
+            logger.info("Peptides unique to isoforms of the protein: " + ic);
+            logger.info("Peptides unique to encoded proteins of the same gene: " + gc);
+            logger.info("Peptides non unique to the protein: " + sc);
+
         }
 
         return protein;
@@ -480,7 +472,6 @@ public class DataRetriever {
 
     @Transactional(readOnly = true)
     public List<LocatedPeptide> getProteinPeptides(String acc, String tissueName, String modName) {
-        List<LocatedPeptide> list = new ArrayList<LocatedPeptide>();
         //retrieve all peptide-protein matches from the protein record
         Collection<PeptideProtein> ppMatches = peptideProteinRepository.findByProteinProteinAccession(acc);
 
@@ -553,27 +544,27 @@ public class DataRetriever {
         return Uniqueness.NON_UNIQUE.ordinal();
     }
 
-    @Transactional(readOnly = true)
-    public String getProteinCount(int species, String description) {
-        long count;
-
-        if (species < 0) {
-            if (description != null && !description.trim().isEmpty()) {
-                count = proteinRepository.countByDescriptionContaining(description);
-            } else {
-                count = proteinRepository.count();
-            }
-        } else {
-            if (description != null && !description.trim().isEmpty()) {
-                count = proteinRepository.countByTaxidAndDescriptionContaining(species, description);
-            } else {
-                count = proteinRepository.countByTaxid(species);
-            }
-
-        }
-        // ToDo: (future) perhaps return a more verbose object that also lists the applied filter values
-        return count + "";
-    }
+//    @Transactional(readOnly = true)
+//    public String getProteinCount(int species, String description) {
+//        long count;
+//
+//        if (species < 0) {
+//            if (description != null && !description.trim().isEmpty()) {
+//                count = proteinRepository.countByDescriptionContaining(description);
+//            } else {
+//                count = proteinRepository.count();
+//            }
+//        } else {
+//            if (description != null && !description.trim().isEmpty()) {
+//                count = proteinRepository.countByTaxidAndDescriptionContaining(species, description);
+//            } else {
+//                count = proteinRepository.countByTaxid(species);
+//            }
+//
+//        }
+//        // ToDo: (future) perhaps return a more verbose object that also lists the applied filter values
+//        return count + "";
+//    }
 
     @Transactional(readOnly = true)
     public Statistics getStatistics(Collection<Species> species) {
@@ -681,5 +672,6 @@ public class DataRetriever {
         return list;
 
     }
+
 
 }

@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.proteomes.web.service.sample.json;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
 
 import java.io.IOException;
 

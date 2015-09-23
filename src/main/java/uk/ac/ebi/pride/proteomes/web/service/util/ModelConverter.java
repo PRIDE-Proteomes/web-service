@@ -7,13 +7,13 @@ import uk.ac.ebi.pride.proteomes.db.core.api.cluster.Cluster;
 import uk.ac.ebi.pride.proteomes.db.core.api.modification.ModificationLocation;
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptiform;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.GeneGroup;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.feature.Feature;
-import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
 import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.proteingroup.ProteinGroup;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.AssayComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.FeatureComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
@@ -122,7 +122,7 @@ public class ModelConverter {
         SortedSet<ModifiedLocation> convertedMods = new TreeSet<ModifiedLocation>(new ModifiedLocationComparator());
 
         for (ModificationLocation location : modificationLocations) {
-            Modification temp = Modification.getModification( location.getModId() );
+            Modification temp = Modification.getModification(location.getModId());
             if (temp == Modification.NONE || temp == Modification.UNKNOWN) {
                 logger.warn("Could not map modification: " + location.getModId());
             } else {

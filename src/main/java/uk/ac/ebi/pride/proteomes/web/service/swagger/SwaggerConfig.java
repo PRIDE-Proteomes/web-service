@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 
 import java.net.URL;
 import java.util.Date;

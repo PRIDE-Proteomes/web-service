@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.proteomes.web.service.modification;
 
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;

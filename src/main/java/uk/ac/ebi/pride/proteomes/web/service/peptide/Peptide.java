@@ -3,10 +3,10 @@ package uk.ac.ebi.pride.proteomes.web.service.peptide;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.modification.HasModifications;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.sample.HasTissues;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.AssayComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
 

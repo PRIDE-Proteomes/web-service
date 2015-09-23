@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.proteomes.web.service.sample;
 
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;

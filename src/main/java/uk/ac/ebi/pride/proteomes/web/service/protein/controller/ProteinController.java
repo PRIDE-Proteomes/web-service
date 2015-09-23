@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.ProteomesService;
 import uk.ac.ebi.pride.proteomes.web.service.ResourceNotFoundException;
-import uk.ac.ebi.pride.proteomes.web.service.modification.Modification;
 import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.protein.ProteinList;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Species;
-import uk.ac.ebi.pride.proteomes.web.service.sample.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
 
 

@@ -1,6 +1,11 @@
 package uk.ac.ebi.pride.proteomes.web.service.sample;
 
-import java.util.*;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Florian Reisinger
