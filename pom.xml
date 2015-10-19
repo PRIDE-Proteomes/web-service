@@ -11,6 +11,7 @@
     <artifactId>webservice</artifactId>
     <packaging>war</packaging>
     <version>1.0.2-SNAPSHOT</version>
+    <name>PRIDE Proteomes Web Service</name>
     <description>The Web Service for the PRIDE Proteomes project</description>
 
     <!-- HOW TO BUILD
