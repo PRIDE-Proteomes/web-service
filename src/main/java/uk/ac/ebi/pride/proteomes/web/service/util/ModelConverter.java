@@ -8,6 +8,7 @@ import uk.ac.ebi.pride.proteomes.db.core.api.modification.ModificationLocation;
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptiform;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.GeneGroup;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
+import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.feature.Feature;
 import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
@@ -43,6 +44,17 @@ public class ModelConverter {
             serviceProtein.setSequence(dbProtein.getSequence());
         }
         serviceProtein.setDescription(dbProtein.getDescription());
+        serviceProtein.setName(dbProtein.getName());
+
+        final Species byTaxid = Species.getByTaxid(dbProtein.getTaxid());
+        if (byTaxid != null) {
+            serviceProtein.setSpecies(byTaxid.getName());
+        } else {
+            serviceProtein.setSpecies("");
+        }
+        serviceProtein.setAlternativeName(dbProtein.getAlternativeName());
+        serviceProtein.setGeneSymbol(dbProtein.getGeneSymbol());
+        serviceProtein.setProteinEvidence(proteinEvidenceDescription(dbProtein.getEvidence()));
 
         Set<GeneGroup> geneGroups = dbProtein.getGeneGroups();
         if (geneGroups != null && !geneGroups.isEmpty()) {
@@ -170,4 +182,33 @@ public class ModelConverter {
         return representation.replace(",", ":").replace("PMOD:", "");
     }
 
+    private static String proteinEvidenceDescription(int proteinEvidence) {
+        //TODO This information should be parse in the web service or stored properly in the DB.
+
+        //Try to substitute the right description by value
+        String aux = "";
+
+            switch (proteinEvidence) {
+                case 1:
+                    aux = "Protein Level";
+                    break;
+                case 2:
+                    aux = "Transcript Level";
+                    break;
+                case 3:
+                    aux = "Inferred from Homology";
+                    break;
+                case 4:
+                    aux = "Predicted";
+                    break;
+                case 5:
+                    aux = "Uncertain";
+                    break;
+                default:
+                    aux = "Unavailable";
+                    //We return the unparsed String
+            }
+
+        return aux;
+    }
 }

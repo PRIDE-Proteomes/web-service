@@ -27,7 +27,7 @@ public class Protein implements HasTissues, HasModifications {
     @ApiModelProperty(value = "the protein's accession")
     private String accession = "";
     @ApiModelProperty(value = "the protein's associated gene")
-    private String gene = "";
+    private String gene = ""; //This the gene associated during the process of grouping
     @ApiModelProperty(value = "the protein's species (taxon id)")
     private int taxonID = -1;
     @ApiModelProperty(value = "the protein's sequence")
@@ -51,9 +51,12 @@ public class Protein implements HasTissues, HasModifications {
     @ApiModelProperty(value = "number of shared peptides")
     private int nonUniquePeptidesCount = -1;
 
-    // for web front-end only
-    private String coverage; // not used any longer!
-    private int[][] regions; // array of coverage regions represented by integer triplets [start pos, length, coverage value]
+    // for web front-end only. Uniprot enrichment for protein details.
+    private String name;
+    private String alternativeName;
+    private String geneSymbol;
+    private String proteinEvidence;
+    private String species;
 
     public Protein() {
         modifiedLocations = new TreeSet<ModifiedLocation>(new ModifiedLocationComparator());
@@ -99,22 +102,6 @@ public class Protein implements HasTissues, HasModifications {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getCoverage() {
-        return coverage;
-    }
-
-    public void setCoverage(String coverage) {
-        this.coverage = coverage;
-    }
-
-    public int[][] getRegions() {
-        return regions;
-    }
-
-    public void setRegions(int[][] regions) {
-        this.regions = regions;
     }
 
     @Override
@@ -202,4 +189,46 @@ public class Protein implements HasTissues, HasModifications {
         result = 31 * result + taxonID;
         return result;
     }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setAlternativeName(String alternativeName) {
+        this.alternativeName = alternativeName;
+    }
+
+    public String getAlternativeName() {
+        return alternativeName;
+    }
+
+    public void setGeneSymbol(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
+    }
+
+    public String getGeneSymbol() {
+        return geneSymbol;
+    }
+
+    public void setProteinEvidence(String proteinEvidence) {
+        this.proteinEvidence = proteinEvidence;
+    }
+
+    public String getProteinEvidence() {
+        return proteinEvidence;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
 }
