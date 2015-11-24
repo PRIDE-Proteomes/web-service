@@ -24,8 +24,6 @@ public class DatasetStats {
     private long peptiformCount;
     @ApiModelProperty(value = "number of mapped proteins in the dataset")
     private long mappedProteinCount;
-    @ApiModelProperty(value = "number of mapped UniProt Entry groups in the dataset")
-    private long mappedUpGroupCount;
     @ApiModelProperty(value = "number of mapped gene groups in the dataset")
     private long mappedGeneGroupCount;
     @ApiModelProperty(value = "total of proteins in the dataset")
@@ -86,14 +84,6 @@ public class DatasetStats {
 
     public void setPeptiformCount(long peptiformCount) {
         this.peptiformCount = peptiformCount;
-    }
-
-    public long getMappedUpGroupCount() {
-        return mappedUpGroupCount;
-    }
-
-    public void setMappedUpGroupCount(long mappedUpGroupCount) {
-        this.mappedUpGroupCount = mappedUpGroupCount;
     }
 
     public long getMappedGeneGroupCount() {

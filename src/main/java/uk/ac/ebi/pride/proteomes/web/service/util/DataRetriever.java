@@ -15,7 +15,7 @@ import uk.ac.ebi.pride.proteomes.db.core.api.peptide.group.PeptideGroupRepositor
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.protein.PeptideProtein;
 import uk.ac.ebi.pride.proteomes.db.core.api.peptide.protein.PeptideProteinRepository;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.ProteinRepository;
-import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.EntryGroup;
+import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.GeneGroup;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroupRepository;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.Uniqueness;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
@@ -501,10 +501,10 @@ public class DataRetriever {
                 for (PeptideGroup peptideGroup : ppMatch.getPeptide().getProteinGroups()) {
                     final uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroup proteinGroup = peptideGroup.getProteinGroup();
                     if (proteinGroup != null) {
-                        if (proteinGroup instanceof EntryGroup) {
-                            lPeptide.getSharedUpEntries().add(proteinGroup.getId());
-                        } else {
+                        if (proteinGroup instanceof GeneGroup) {
                             lPeptide.getSharedGenes().add(proteinGroup.getId());
+                        } else {
+                            //TODO add a warning
                         }
                     }
 
@@ -533,9 +533,6 @@ public class DataRetriever {
     private Integer calculateUniquenessLevel(LocatedPeptide peptide) {
         if (peptide.getSharedProteins().size() == 1){
             return Uniqueness.UNIQUE_TO_PROTEIN.ordinal();
-        }
-        else if(peptide.getSharedUpEntries().size() == 1){
-            return Uniqueness.UNIQUE_TO_UP_ENTRY.ordinal();
         }
         else if(peptide.getSharedGenes().size() == 1){
             return Uniqueness.UNIQUE_TO_GENE.ordinal();
@@ -575,10 +572,8 @@ public class DataRetriever {
             DatasetStats stats = new DatasetStats(s);
             stats.setPeptiformCount(peptideRepository.countPeptiformsByTaxid(s.getTaxid()));
             stats.setMappedProteinCount(peptideProteinRepository.countMappedProteinsByTaxId(s.getTaxid()));
-            stats.setMappedUpGroupCount(peptideGroupRepository.countMappedUPEntriesByTaxId(s.getTaxid()));
             stats.setMappedGeneGroupCount(peptideGroupRepository.countMappedGenesByTaxId(s.getTaxid()));
             stats.setTotalProteinCount(proteinRepository.countByTaxid(s.getTaxid()));
-            stats.setTotalUpGroupCount(proteinGroupRepository.countEntryGroupsByTaxid(s.getTaxid()));
             stats.setTotalGeneGroupCount(proteinGroupRepository.countGeneGroupsByTaxid(s.getTaxid()));
             proteomesStats.addDatasetStats(stats);
         }
