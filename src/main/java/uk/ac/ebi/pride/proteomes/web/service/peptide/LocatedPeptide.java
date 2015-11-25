@@ -21,9 +21,6 @@ public class LocatedPeptide extends Peptide  {
     @ApiModelProperty(value = "protein accessions shared with this peptide")
     private Set<String> sharedProteins = new HashSet<String>();
 
-    @ApiModelProperty(value = "protein entry accessions shared with this peptide")
-    private Set<String> sharedUpEntries = new HashSet<String>();
-
     @ApiModelProperty(value = "gene accessions shared with this peptide")
     private Set<String> sharedGenes = new HashSet<String>();
 
@@ -60,14 +57,6 @@ public class LocatedPeptide extends Peptide  {
 
     public void setSharedProteins(Set<String> sharedProteins) {
         this.sharedProteins = sharedProteins;
-    }
-
-    public Set<String> getSharedUpEntries() {
-        return sharedUpEntries;
-    }
-
-    public void setSharedUpEntries(Set<String> sharedUpEntries) {
-        this.sharedUpEntries = sharedUpEntries;
     }
 
     public Set<String> getSharedGenes() {

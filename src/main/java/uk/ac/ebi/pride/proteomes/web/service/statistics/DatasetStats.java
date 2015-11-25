@@ -28,8 +28,6 @@ public class DatasetStats {
     private long mappedGeneGroupCount;
     @ApiModelProperty(value = "total of proteins in the dataset")
     private long totalProteinCount;
-    @ApiModelProperty(value = "total of UniProt Entry groups in the dataset")
-    private long totalUpGroupCount;
     @ApiModelProperty(value = "total of gene groups in the dataset")
     private long totalGeneGroupCount;
 
@@ -100,14 +98,6 @@ public class DatasetStats {
 
     public void setTotalProteinCount(long totalProteinCount) {
         this.totalProteinCount = totalProteinCount;
-    }
-
-    public long getTotalUpGroupCount() {
-        return totalUpGroupCount;
-    }
-
-    public void setTotalUpGroupCount(long totalUpGroupCount) {
-        this.totalUpGroupCount = totalUpGroupCount;
     }
 
     public long getTotalGeneGroupCount() {

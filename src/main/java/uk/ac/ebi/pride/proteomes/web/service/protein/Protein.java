@@ -26,8 +26,8 @@ public class Protein implements HasTissues, HasModifications {
 
     @ApiModelProperty(value = "the protein's accession")
     private String accession = "";
-    @ApiModelProperty(value = "the protein's associated gene")
-    private String gene = ""; //This the gene associated during the process of grouping
+    @ApiModelProperty(value = "the protein's associated genes")
+    private Set<String> genes ; //Genes associated during the process of grouping
     @ApiModelProperty(value = "the protein's species (taxon id)")
     private int taxonID = -1;
     @ApiModelProperty(value = "the protein's sequence")
@@ -44,8 +44,6 @@ public class Protein implements HasTissues, HasModifications {
     private Set<Feature> features;
     @ApiModelProperty(value = "number of peptides unique to this protein")
     private int uniquePeptideToProteinCount = -1;
-    @ApiModelProperty(value = "number of peptides unique to isoforms of protein")
-    private int uniquePeptideToIsoformCount = -1;
     @ApiModelProperty(value = "number of peptides unique to proteins encoded by the same gene")
     private int uniquePeptideToGeneCount = -1;
     @ApiModelProperty(value = "number of shared peptides")
@@ -62,6 +60,8 @@ public class Protein implements HasTissues, HasModifications {
         modifiedLocations = new TreeSet<ModifiedLocation>(new ModifiedLocationComparator());
         peptides = new TreeSet<LocatedPeptide>(new LocatedPeptideComparator());
         tissues = new TreeSet<Tissue>();
+        //TODO: Take into account that genes can be empty.
+        genes = new TreeSet<String>();
     }
 
     public String getAccession() {
@@ -72,12 +72,12 @@ public class Protein implements HasTissues, HasModifications {
         this.accession = accession;
     }
 
-    public String getGene() {
-        return gene;
+    public Set<String> getGenes() {
+        return genes;
     }
 
-    public void setGene(String gene) {
-        this.gene = gene;
+    public void setGenes(Set<String> genes) {
+        this.genes = genes;
     }
 
     public int getTaxonID() {
@@ -146,14 +146,6 @@ public class Protein implements HasTissues, HasModifications {
         this.uniquePeptideToProteinCount = uniquePeptideToProteinCount;
     }
 
-    public int getUniquePeptideToIsoformCount() {
-        return uniquePeptideToIsoformCount;
-    }
-
-    public void setUniquePeptideToIsoformCount(int uniquePeptideToIsoformCount) {
-        this.uniquePeptideToIsoformCount = uniquePeptideToIsoformCount;
-    }
-
     public int getUniquePeptideToGeneCount() {
         return uniquePeptideToGeneCount;
     }
@@ -170,26 +162,7 @@ public class Protein implements HasTissues, HasModifications {
         this.nonUniquePeptidesCount = nonUniquePeptidesCount;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Protein)) return false;
-
-        Protein protein = (Protein) o;
-
-        if (taxonID != protein.taxonID) return false;
-        if (!accession.equals(protein.accession)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = accession.hashCode();
-        result = 31 * result + taxonID;
-        return result;
-    }
-
+    //Fronted
 
     public void setName(String name) {
         this.name = name;
@@ -229,6 +202,27 @@ public class Protein implements HasTissues, HasModifications {
 
     public String getSpecies() {
         return species;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Protein)) return false;
+
+        Protein protein = (Protein) o;
+
+        if (taxonID != protein.taxonID) return false;
+        if (!accession.equals(protein.accession)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = accession.hashCode();
+        result = 31 * result + taxonID;
+        return result;
     }
 
 }

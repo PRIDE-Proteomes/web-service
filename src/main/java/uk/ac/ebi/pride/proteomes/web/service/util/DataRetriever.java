@@ -250,21 +250,17 @@ public class DataRetriever {
             List<LocatedPeptide> tmpPepList = getProteinPeptides(dbProtein.getPeptides(), null, null);
             protein.getPeptides().addAll(tmpPepList);
             int uc = 0;
-            int ic = 0;
             int gc = 0;
             int sc = 0;
             for (LocatedPeptide locatedPeptide : tmpPepList) {
                 switch (locatedPeptide.getUniqueness()) {
-                    case 0:
+                    case 0: //NON_UNIQUE
                         sc++;
                         break;
-                    case 1:
+                    case 1: //UNIQUE_TO_PROTEIN
                         uc++;
                         break;
-                    case 2:
-                        ic++;
-                        break;
-                    case 3:
+                    case 2: //UNIQUE_TO_GENE
                         gc++;
                         break;
                     default:
@@ -272,11 +268,9 @@ public class DataRetriever {
                 }
             }
             protein.setUniquePeptideToProteinCount(uc);
-            protein.setUniquePeptideToIsoformCount(ic);
             protein.setUniquePeptideToGeneCount(gc);
             protein.setNonUniquePeptidesCount(sc);
             logger.info("Peptides unique to the protein: " + uc);
-            logger.info("Peptides unique to isoforms of the protein: " + ic);
             logger.info("Peptides unique to encoded proteins of the same gene: " + gc);
             logger.info("Peptides non unique to the protein: " + sc);
 

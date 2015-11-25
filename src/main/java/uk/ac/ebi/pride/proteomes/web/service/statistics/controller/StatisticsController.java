@@ -72,18 +72,14 @@ public class StatisticsController {
         // (note: this may not be all available species)
         long peptiformCnt = 0;
         long mappedProteinCnt = 0;
-        long mappedUpGroupCnt = 0;
         long mappedGeneGroupCnt = 0;
         long totalProteinCnt = 0;
-        long totalUpGroupCnt = 0;
         long totalGeneGroupCnt = 0;
         for (DatasetStats stats : tempStats.getDatasetStatistics()) {
             peptiformCnt += stats.getPeptiformCount();
             mappedProteinCnt += stats.getMappedProteinCount();
-            mappedUpGroupCnt += stats.getMappedUpGroupCount();
             mappedGeneGroupCnt += stats.getMappedGeneGroupCount();
             totalProteinCnt += stats.getTotalProteinCount();
-            totalUpGroupCnt += stats.getTotalUpGroupCount();
             totalGeneGroupCnt += stats.getTotalGeneGroupCount();
         }
         // add the total counts as new DatasetStats
@@ -93,10 +89,8 @@ public class StatisticsController {
         allStats.setScientificName("aggregated statistics");
         allStats.setPeptiformCount(peptiformCnt);
         allStats.setMappedProteinCount(mappedProteinCnt);
-        allStats.setMappedUpGroupCount(mappedUpGroupCnt);
         allStats.setMappedGeneGroupCount(mappedGeneGroupCnt);
         allStats.setTotalProteinCount(totalProteinCnt);
-        allStats.setTotalUpGroupCount(totalUpGroupCnt);
         allStats.setTotalGeneGroupCount(totalGeneGroupCnt);
 
         // add the total to the stats

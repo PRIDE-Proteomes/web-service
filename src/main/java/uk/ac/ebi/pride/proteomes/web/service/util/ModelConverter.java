@@ -60,7 +60,7 @@ public class ModelConverter {
         if (geneGroups != null && !geneGroups.isEmpty()) {
             GeneGroup geneGroup = geneGroups.iterator().next();
             String geneId = geneGroup.getId();
-            serviceProtein.setGene(geneId);
+            serviceProtein.getGenes().add(geneId);
         }
 
         // modifications would have to be mapped to protein positions and therefore are
