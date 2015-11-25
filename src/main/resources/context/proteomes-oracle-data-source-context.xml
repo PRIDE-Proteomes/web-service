@@ -2,22 +2,26 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <!--<tx:annotation-driven transaction-manager="jpaTransactionManager"/>-->
+    <context:annotation-config/>
 
+    <jpa:repositories base-package="uk.ac.ebi.pride.proteomes.db.core.api"/>
 
     <!--Setup data source using place holder properties-->
     <bean id="proteomesDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${prideprot.jdbc.driver}"/>
-        <property name="url" value="${prideprot.jdbc.url}"/>
-        <property name="username" value="${prideprot.jdbc.user}"/>
-        <property name="password" value="${prideprot.jdbc.password}"/>
+        <property name="driverClassName" value="${pride.prot.jdbc.driver}"/>
+        <property name="url" value="${pride.prot.jdbc.url}"/>
+        <property name="username" value="${pride.prot.jdbc.user}"/>
+        <property name="password" value="${pride.prot.jdbc.password}"/>
         <property name="maxActive" value="6"/>
         <property name="validationQuery" value="select 1 from dual"/>
         <property name="testWhileIdle" value="true"/>
     </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!--pride-loader beans -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -50,6 +54,17 @@
     <bean class="org.springframework.orm.hibernate4.HibernateExceptionTranslator"/>
 
     <!--load property files-->
-    <context:property-placeholder location="classpath:props/pride-proteomes-db.properties" ignore-unresolvable="true" order="1"/>
+    <!-- Set up or detect a System property called "DB_ENVIRONMENT" used to construct a properties file on the classpath.  The default is "test".  -->
+    <!-- See scripts to have a look how to use this environment -->
+    <bean id="dbEnvironment"
+          class="org.springframework.batch.support.SystemPropertyInitializer">
+        <property name="defaultValue" value="test"/>
+        <property name="keyName" value="DB_ENVIRONMENT"/>
+    </bean>
 
+    <bean id="dbPlaceholderProperties" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" depends-on="dbEnvironment">
+        <property name="location" value="classpath:prop/db/pride-proteomes-db-${DB_ENVIRONMENT}.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="order" value="1"/>
+    </bean>
 </beans>

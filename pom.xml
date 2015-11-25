@@ -38,6 +38,7 @@
         <commons.dbcp.version>1.4</commons.dbcp.version>
         <swagger.springmvc.version>0.8.8</swagger.springmvc.version>
         <spring.version>4.1.7.RELEASE</spring.version>
+        <spring.batch.version>2.2.7.RELEASE</spring.batch.version>
     </properties>
 
     <build>
@@ -140,6 +141,11 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-infrastructure</artifactId>
+            <version>${spring.batch.version}</version>
+        </dependency>
 
         <!-- HSQLDB for integration testing -->
         <dependency>
@@ -153,7 +159,7 @@
             <artifactId>oracle-thin</artifactId>
         </dependency>
 
-        <!-- Hibernate overwrite to avoid bug in later versions (see jpa-data-source-context.xml for details) -->
+        <!-- Hibernate overwrite to avoid bug in later versions (see proteomes-oracle-data-source-context.xml for details) -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
