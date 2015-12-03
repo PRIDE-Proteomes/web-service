@@ -213,9 +213,8 @@ public class Protein implements HasTissues, HasModifications {
         Protein protein = (Protein) o;
 
         if (taxonID != protein.taxonID) return false;
-        if (!accession.equals(protein.accession)) return false;
+        return accession.equals(protein.accession);
 
-        return true;
     }
 
     @Override

@@ -93,9 +93,8 @@ public class ProteinGroup implements HasTissues {
         ProteinGroup that = (ProteinGroup) o;
 
         if (taxonID != that.taxonID) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return !(id != null ? !id.equals(that.id) : that.id != null);
 
-        return true;
     }
 
     @Override

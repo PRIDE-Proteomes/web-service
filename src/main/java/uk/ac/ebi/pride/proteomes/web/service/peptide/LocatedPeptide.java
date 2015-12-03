@@ -75,9 +75,8 @@ public class LocatedPeptide extends Peptide  {
 
         LocatedPeptide that = (LocatedPeptide) o;
 
-        if (position != null ? !position.equals(that.position) : that.position != null) return false;
+        return !(position != null ? !position.equals(that.position) : that.position != null);
 
-        return true;
     }
 
     @Override

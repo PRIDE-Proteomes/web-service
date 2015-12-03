@@ -24,7 +24,7 @@ import java.util.List;
 @Api(value = "stats", description = "retrieve basic statistics", position = 6)
 @Controller
 @RequestMapping(value="stats")
-public class StatisticsController {
+public class    StatisticsController {
 
     public static final Logger logger = LoggerFactory.getLogger(StatisticsController.class);
 

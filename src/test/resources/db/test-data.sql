@@ -1258,7 +1258,7 @@ INSERT INTO PRIDEPROT.PEP_CV (PEPTIDE_ID, CV_TERM)
 
 -- ToDo: link peptides to tissues (for case Q08648)
 
--- link peptide variances to tissues (for case Q08648)
+-- link peptiforms to tissues (for case Q08648)
 INSERT INTO PRIDEPROT.PEP_CV (PEPTIDE_ID, CV_TERM)
   VALUES (111111111, N'BTO:0000089'); -- blood
 

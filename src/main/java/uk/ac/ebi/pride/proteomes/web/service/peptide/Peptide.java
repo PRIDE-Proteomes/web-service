@@ -121,9 +121,8 @@ public class Peptide implements HasTissues, HasModifications {
 
         Peptide peptide = (Peptide) o;
 
-        if (!id.equals(peptide.id)) return false;
+        return id.equals(peptide.id);
 
-        return true;
     }
 
     @Override

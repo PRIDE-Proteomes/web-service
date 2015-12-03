@@ -7,7 +7,7 @@ var realm;
 function handleLogin() {
   var scopes = [];
 
-  if(window.swaggerUi.api.authSchemes 
+  if(window.swaggerUi.api.authSchemes
     && window.swaggerUi.api.authSchemes.oauth2
     && window.swaggerUi.api.authSchemes.oauth2.scopes) {
     scopes = window.swaggerUi.api.authSchemes.oauth2.scopes;
@@ -90,7 +90,7 @@ function handleLogin() {
         }
       }
     }
-    var scopes = []
+    var scopes = [];
     var o = $('.api-popup-scopes').find('input:checked');
 
     for(k =0; k < o.length; k++) {
@@ -109,7 +109,7 @@ function handleLogin() {
 
   popupMask.show();
   popupDialog.show();
-  return;
+
 }
 
 
@@ -155,7 +155,7 @@ function initOAuth(opts) {
 function onOAuthComplete(token) {
   if(token) {
     if(token.error) {
-      var checkbox = $('input[type=checkbox],.secured')
+      var checkbox = $('input[type=checkbox],.secured');
       checkbox.each(function(pos){
         checkbox[pos].checked = false;
       });
@@ -199,7 +199,7 @@ function onOAuthComplete(token) {
               // all scopes are satisfied
               $(o).find('.api-ic').addClass('ic-info');
               $(o).find('.api-ic').removeClass('ic-warning');
-              $(o).find('.api-ic').removeClass('ic-error');          
+              $(o).find('.api-ic').removeClass('ic-error');
             }
           }
         });
