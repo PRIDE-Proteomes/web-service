@@ -21,7 +21,7 @@ import uk.ac.ebi.pride.proteomes.web.service.util.comparator.LocatedPeptideCompa
  */
 @Api(value = "peptide", description = "retrieve information about peptides", position = 2)
 @Controller
-@RequestMapping(value="peptide")
+@RequestMapping(value = "peptide")
 public class PeptideController {
 
 
@@ -32,13 +32,13 @@ public class PeptideController {
     DataRetriever dataRetriever;
 
 
-    @RequestMapping(value ="/{sequence}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{sequence}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public PeptideList getById(@PathVariable("sequence") String sequence,
-            @RequestParam(value = "species", defaultValue = Species.defaultValue) int species,
-            @RequestParam(value = "tissue", defaultValue = Tissue.defaultValue) String tissueName,
-            @RequestParam(value = "mod", defaultValue = Modification.defaultValue) String modName,
-            @RequestParam(value = "includeDetails", defaultValue = "true") boolean includeDetails) {
+                               @RequestParam(value = "species", defaultValue = Species.defaultValue) int species,
+                               @RequestParam(value = "tissue", defaultValue = Tissue.defaultValue) String tissueName,
+                               @RequestParam(value = "mod", defaultValue = Modification.defaultValue) String modName,
+                               @RequestParam(value = "includeDetails", defaultValue = "true") boolean includeDetails) {
 
         PeptideList<Peptide> list = new PeptideList<Peptide>();
         list.addAll(dataRetriever.getPeptidesForSequence(sequence, species, tissueName, modName, includeDetails));
@@ -46,8 +46,7 @@ public class PeptideController {
     }
 
 
-
-    @RequestMapping(value ="/list", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public PeptideList getPeptideList(
             @RequestParam(value = "species", defaultValue = "9606") int species,
@@ -63,19 +62,14 @@ public class PeptideController {
     }
 
 
-
-    @RequestMapping(value ="/list/protein/{acc}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/list/protein/{acc}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public PeptideList getPeptideListForProtein(@PathVariable("acc") String acc,
-            @RequestParam(value = "tissue", defaultValue = Tissue.defaultValue) String tissueName,
-            @RequestParam(value = "mod", defaultValue = Modification.defaultValue) String modName) {
+                                                @RequestParam(value = "tissue", defaultValue = Tissue.defaultValue) String tissueName,
+                                                @RequestParam(value = "mod", defaultValue = Modification.defaultValue) String modName) {
 
         PeptideList<LocatedPeptide> list = new PeptideList<LocatedPeptide>(new LocatedPeptideComparator());
         list.addAll(dataRetriever.getProteinPeptides(acc, tissueName, modName));
         return list;
     }
-
-
-
-
 }
