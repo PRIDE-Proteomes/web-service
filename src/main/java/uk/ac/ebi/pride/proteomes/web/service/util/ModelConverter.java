@@ -15,6 +15,7 @@ import uk.ac.ebi.pride.proteomes.web.service.modification.ModifiedLocation;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
 import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.proteingroup.ProteinGroup;
+import uk.ac.ebi.pride.proteomes.web.service.release.ReleaseSummary;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.AssayComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.FeatureComparator;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.ModifiedLocationComparator;
@@ -175,6 +176,40 @@ public class ModelConverter {
 
 
         return serviceProteinGroup;
+    }
+
+    public static ReleaseSummary convertReleaseSummary(uk.ac.ebi.pride.proteomes.db.core.api.release.ReleaseSummary releaseSummary) {
+
+        ReleaseSummary convertedReleaseSummary = new ReleaseSummary();
+
+        convertedReleaseSummary.setTaxonID(releaseSummary.getId().getTaxid());
+        convertedReleaseSummary.setReferenceDatabase(releaseSummary.getReferenceDatabase());
+        convertedReleaseSummary.setReferenceDatabaseVersion(releaseSummary.getReferenceDatabaseVersion());
+        convertedReleaseSummary.setNumPeptiforms(releaseSummary.getNumPeptiforms());
+        convertedReleaseSummary.setNumPeptides(releaseSummary.getNumPeptides());
+        convertedReleaseSummary.setNumProteins(releaseSummary.getNumProteins());
+        convertedReleaseSummary.setNumIsoformProteins(releaseSummary.getNumIsoformProteins());
+        convertedReleaseSummary.setNumCanonicalProteins(releaseSummary.getNumCanonicalProteins());
+        convertedReleaseSummary.setNumGenes(releaseSummary.getNumGenes());
+        convertedReleaseSummary.setNumMappedProteins(releaseSummary.getNumMappedProteins());
+        convertedReleaseSummary.setNumMappedCanonicalProteins(releaseSummary.getNumMappedCanonicalProteins());
+        convertedReleaseSummary.setNumMappedIsoformProteins(releaseSummary.getNumMappedIsoformProteins());
+        convertedReleaseSummary.setNumMappedGenes(releaseSummary.getNumMappedGenes());
+        convertedReleaseSummary.setNumMappedPeptidesToProteins(releaseSummary.getNumMappedPeptidesToProteins());
+        convertedReleaseSummary.setNumMappedUniquePeptidesToProteins(releaseSummary.getNumMappedUniquePeptidesToProteins());
+        convertedReleaseSummary.setNumMappedUniquePeptidesToIsoformProteins(releaseSummary.getNumMappedUniquePeptidesToIsoformProteins());
+        convertedReleaseSummary.setNumMappedUniquePeptidesToCanonicalProteins(releaseSummary.getNumMappedUniquePeptidesToCanonicalProteins());
+        convertedReleaseSummary.setNumMappedUniquePeptidesToGenes(releaseSummary.getNumMappedUniquePeptidesToGenes());
+        convertedReleaseSummary.setNumMappedProteinsWithUniquePeptides(releaseSummary.getNumMappedProteinsWithUniquePeptides());
+        convertedReleaseSummary.setNumMappedCanonicalProteinsWithUniquePeptides(releaseSummary.getNumMappedCanonicalProteinsWithUniquePeptides());
+        convertedReleaseSummary.setNumMappedIsoformProteinsWithUniquePeptides(releaseSummary.getNumMappedIsoformProteinsWithUniquePeptides());
+        convertedReleaseSummary.setNumMappedGenesWithUniquePeptides(releaseSummary.getNumMappedGenesWithUniquePeptides());
+        convertedReleaseSummary.setNumMappedProteinsWithExpEvidenceAtTranscript(releaseSummary.getNumMappedProteinsWithExpEvidenceAtTranscript());
+        convertedReleaseSummary.setNumMappedProteinsWithEvidenceInferredByHomology(releaseSummary.getNumMappedProteinsWithEvidenceInferredByHomology());
+        convertedReleaseSummary.setNumMappedProteinWithEvidencePredicted(releaseSummary.getNumMappedProteinWithEvidencePredicted());
+        convertedReleaseSummary.setNumMappedProteinWithEvidenceUncertain(releaseSummary.getNumMappedProteinWithEvidenceUncertain());
+
+        return convertedReleaseSummary;
     }
 
     public static String getIdFromPeptideRepresentation(String representation) {

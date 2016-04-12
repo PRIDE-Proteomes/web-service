@@ -17,6 +17,7 @@ import uk.ac.ebi.pride.proteomes.db.core.api.peptide.protein.PeptideProteinRepos
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.ProteinRepository;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.GeneGroup;
 import uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroupRepository;
+import uk.ac.ebi.pride.proteomes.db.core.api.release.ReleaseSummaryRepository;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.Uniqueness;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Modification;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Species;
@@ -25,6 +26,7 @@ import uk.ac.ebi.pride.proteomes.web.service.peptide.LocatedPeptide;
 import uk.ac.ebi.pride.proteomes.web.service.peptide.Peptide;
 import uk.ac.ebi.pride.proteomes.web.service.protein.Protein;
 import uk.ac.ebi.pride.proteomes.web.service.proteingroup.ProteinGroup;
+import uk.ac.ebi.pride.proteomes.web.service.release.ReleaseSummary;
 import uk.ac.ebi.pride.proteomes.web.service.statistics.DatasetStats;
 import uk.ac.ebi.pride.proteomes.web.service.statistics.Statistics;
 import uk.ac.ebi.pride.proteomes.web.service.util.comparator.UniprotAccessionComparator;
@@ -47,26 +49,26 @@ public class DataRetriever {
     private static final List<Species> supportedSpecies;
 
     static {
-        supportedSpecies = new ArrayList<Species>(4);
-        supportedSpecies.add(Species.HOMO_SAPIENS);
-        supportedSpecies.add(Species.MUS_MUSCULUS);
-        supportedSpecies.add(Species.RATTUS_NORVEGICUS);
-        supportedSpecies.add(Species.ARABIDOPSIS_THALIANA);
-//        supportedSpecies.add(Species.DANIO_RERIO);
-//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE);
-//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE_S288C);
-//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE_YJM789);
-//        supportedSpecies.add(Species.ESCHERICHIA_COLI);
-//        supportedSpecies.add(Species.ESCHERICHIA_COLI_K_12);
-//        supportedSpecies.add(Species.ESCHERICHIA_COLI_O157_H7_STR_EDL933);
-//        supportedSpecies.add(Species.ESCHERICHIA_COLI_O157_H7_STR_TW14359);
-//        supportedSpecies.add(Species.ESCHERICHIA_COLI_STR_K_12_SUBSTR_MG1655);
-//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE);
-//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE_927);
-//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE_972H_);
-//        supportedSpecies.add(Species.DROSOPHILA);
-//        supportedSpecies.add(Species.DROSOPHILA_MELANOGASTER);
-//        supportedSpecies.add(Species.ORYZA_SATIVA);
+        supportedSpecies = new ArrayList<Species>(9);
+        supportedSpecies.add(Species.HOMO_SAPIENS); //9606 -> UP000005640
+        supportedSpecies.add(Species.MUS_MUSCULUS); //10090 -> UP000000589
+        supportedSpecies.add(Species.RATTUS_NORVEGICUS); //10116 -> UP000002494
+        supportedSpecies.add(Species.ARABIDOPSIS_THALIANA); //3702 -> 	UP000006548
+        supportedSpecies.add(Species.DANIO_RERIO); //7955  -> UP000000437
+        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE_S288C); //559292 -> 	UP000002311
+        supportedSpecies.add(Species.ESCHERICHIA_COLI_K_12); //83333 -> UP000000625
+        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE_972H_); //284812 -> UP000002485
+        supportedSpecies.add(Species.DROSOPHILA_MELANOGASTER); //7227 -> UP000000803
+//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE); //4932
+//        supportedSpecies.add(Species.SACCHAROMYCES_CEREVISIAE_YJM789); //307796
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI); //562
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI_O157_H7_STR_EDL933); //155864
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI_O157_H7_STR_TW14359); //544404
+//        supportedSpecies.add(Species.ESCHERICHIA_COLI_STR_K_12_SUBSTR_MG1655); //511145
+//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE); //4896
+//        supportedSpecies.add(Species.SCHIZOSACCHAROMYCES_POMBE_927); //1264690
+//        supportedSpecies.add(Species.DROSOPHILA); //7215
+//        supportedSpecies.add(Species.ORYZA_SATIVA); //4530
 
     }
 
@@ -82,6 +84,8 @@ public class DataRetriever {
     PeptideGroupRepository peptideGroupRepository;
     @Autowired
     CvParamProteomesRepository cvParamRepository;
+    @Autowired
+    ReleaseSummaryRepository releaseSummaryRepository;
 
     @Autowired
     DataSource proteomesDataSource;
@@ -157,7 +161,7 @@ public class DataRetriever {
         ProteinGroup serviceGroup = ModelConverter.convertProteinGroup(dbGroup);
         // check if we should add a list of unique peptides mapped to their protein accessions
         if (addUniquePeptides) {
-            List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> dbPeptides = findPeptideByProtein(id, true);
+            List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> dbPeptides = findPeptideByProteinGroupId(id, true);
             for (uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide dbPeptide : dbPeptides) {
                 // we are only interested in peptides that are unique to this group (which may have multiple proteins)
                 String peptideSequence = dbPeptide.getSequence();
@@ -181,12 +185,12 @@ public class DataRetriever {
         return serviceGroup;
     }
 
-    private List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> findPeptideByProtein(String accession, boolean uniqueOnly) {
+    private List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> findPeptideByProteinGroupId(String accession, boolean uniqueOnly) {
         List<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide> peptides = new ArrayList<uk.ac.ebi.pride.proteomes.db.core.api.peptide.Peptide>();
 
         // get unique pepitdes by first querying all and then applying a filter
         // currently faster than the alternative below
-        List<PeptideGroup> allPepGroups = peptideGroupRepository.findByProteinGroupId(accession);
+        List<PeptideGroup> allPepGroups = peptideGroupRepository.findByGeneGroupId(accession); //There is not other group right now
         for (PeptideGroup pepGroup : allPepGroups) {
             if (!uniqueOnly || pepGroup.getUniqueness() == 1) {
                 peptides.add(pepGroup.getPeptide());
@@ -195,7 +199,7 @@ public class DataRetriever {
 
         // get unique peptides with dedicated DB repo query
         // ToDo: this is not efficient at all! Possibly a missing index in the DB...
-//        List<PeptideGroup> uniquePepGroups = peptideGroupRepository.findByProteinGroupIdAndUniqueness(accession, 1);
+//        List<PeptideGroup> uniquePepGroups = peptideGroupRepository.findByGeneGroupIdAndUniqueness(accession, 1);
 //        for (PeptideGroup pepGroup : uniquePepGroups) {
 //            peptides.add(pepGroup.getPeptide());
 //        }
@@ -491,8 +495,8 @@ public class DataRetriever {
                     lPeptide.getSharedProteins().add(peptideProtein.getProteinAccession());
                 }
             }
-            if (ppMatch.getPeptide().getProteinGroups() != null) {
-                for (PeptideGroup peptideGroup : ppMatch.getPeptide().getProteinGroups()) {
+            if (ppMatch.getPeptide().getPeptideGroups() != null) {
+                for (PeptideGroup peptideGroup : ppMatch.getPeptide().getPeptideGroups()) {
                     final uk.ac.ebi.pride.proteomes.db.core.api.protein.groups.ProteinGroup proteinGroup = peptideGroup.getProteinGroup();
                     if (proteinGroup != null) {
                         if (proteinGroup instanceof GeneGroup) {
@@ -663,4 +667,27 @@ public class DataRetriever {
     }
 
 
+    public Collection<ReleaseSummary> getReleaseSummary() {
+
+        Collection<ReleaseSummary> list = new ArrayList<>();
+
+        for (Species species : supportedSpecies) {
+            list.add(getReleaseSummary(species));
+        }
+
+        return list;
+    }
+
+    // Note: If win the end we are not going to store information of all the release,
+    // it would be better to change the primaryKey (taxid + release date) and have only a report per species
+    public ReleaseSummary getReleaseSummary(Species species) {
+
+        List<uk.ac.ebi.pride.proteomes.db.core.api.release.ReleaseSummary> releaseSummaries = releaseSummaryRepository.findByIdTaxid(species.getTaxid());
+
+        if(releaseSummaries.size()!= 1){
+            logger.error("There is more than one release per species" + species.getName() + "only the first is retrieved");
+        }
+
+        return ModelConverter.convertReleaseSummary(releaseSummaries.get(0));
+    }
 }
