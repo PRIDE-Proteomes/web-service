@@ -5,7 +5,7 @@
     <parent> <!-- parent POM -->
         <groupId>uk.ac.ebi.pride.proteomes.maven</groupId>
         <artifactId>proteomes-maven-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.ac.ebi.pride.proteomes.web</groupId>
@@ -52,7 +52,7 @@
     </scm>
 
     <properties>
-        <proteomes.db.core.version>1.0.0</proteomes.db.core.version>
+        <proteomes.db.core.version>1.0.1-SNAPSHOT</proteomes.db.core.version>
         <pride.web.utils.version>1.3.11</pride.web.utils.version>
     </properties>
 
