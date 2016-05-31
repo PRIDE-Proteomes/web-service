@@ -27,7 +27,7 @@ public class ReleaseSummaryList {
         return releaseSummaryList;
     }
 
-    public void addAll(Collection<ReleaseSummary> proteinList) {
+    public void addAll(Collection<ReleaseSummary> releaseSummaryList) {
         this.releaseSummaryList.addAll(releaseSummaryList);
     }
 
