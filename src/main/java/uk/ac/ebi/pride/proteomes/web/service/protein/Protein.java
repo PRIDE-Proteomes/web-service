@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.proteomes.web.service.protein;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.wordnik.swagger.annotations.ApiModel;
-import com.wordnik.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 import uk.ac.ebi.pride.proteomes.web.service.feature.Feature;
 import uk.ac.ebi.pride.proteomes.web.service.modification.HasModifications;

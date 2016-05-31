@@ -27,8 +27,6 @@
            </mvc:interceptor>
        </mvc:interceptors>
 
-    <mvc:resources mapping="/**" location="/resources/" />
-
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
@@ -46,10 +44,14 @@
 
     <!-- Swagger config (REST service documentation)-->
     <!-- Swagger beans -->
-    <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
     <bean class="uk.ac.ebi.pride.proteomes.web.service.swagger.SwaggerConfig"/>
-    <!-- static resources mapping for Swagger UI -->
-    <mvc:resources mapping="/**" location="/resources/" />
+
+    <!-- Enables swgger ui-->
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+
+    <!-- static resources mapping for Swagger UI (version with the static files included) -->
+    <!--<mvc:resources mapping="/**" location="/resources/" />-->
 
 
 </beans>

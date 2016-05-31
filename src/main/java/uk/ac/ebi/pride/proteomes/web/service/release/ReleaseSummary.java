@@ -1,11 +1,13 @@
 package uk.ac.ebi.pride.proteomes.web.service.release;
 
-import com.wordnik.swagger.annotations.ApiModelProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author ntoro
  * @since 07/04/2016 16:07
  */
+//TODO Document the API
 public class ReleaseSummary {
 
     @ApiModelProperty(value = "the release summary's species (taxon id)")

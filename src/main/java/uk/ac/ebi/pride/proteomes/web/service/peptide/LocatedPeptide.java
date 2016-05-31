@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.peptide;
 
-import com.wordnik.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.Uniqueness;
 
 import java.util.HashSet;

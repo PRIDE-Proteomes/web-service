@@ -15,7 +15,7 @@
   <span>
       <br/>
       <br/>
-      Please see the <a href="/index.html">documentation</a> for how to use this web service.
+      Please see the <a href="/swagger-ui.html">documentation</a> for how to use this web service.
   </span>
 </body>
 </html>

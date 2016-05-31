@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.proteomes.web.service.sample.json;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import uk.ac.ebi.pride.proteomes.db.core.api.utils.param.Tissue;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class TissueSerializer extends JsonSerializer<Tissue> {
 
       @Override
       public void serialize(Tissue tissue, JsonGenerator generator,
-                SerializerProvider provider) throws IOException {
+                            SerializerProvider provider) throws IOException {
 
           generator.writeStartObject();
           generator.writeFieldName("id");

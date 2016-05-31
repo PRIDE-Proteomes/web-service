@@ -1,6 +1,5 @@
 package uk.ac.ebi.pride.proteomes.web.service;
 
-import com.mangofactory.swagger.annotations.ApiIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 import uk.ac.ebi.pride.proteomes.web.service.util.DataRetriever;
 
 /**
@@ -22,10 +22,11 @@ public class WelcomeController extends ProteomesService {
     @Autowired
     DataRetriever dataRetriever;
 
+//    TODO Fix the redirection
     @ApiIgnore
     @RequestMapping(value = {"", "/"}, method=RequestMethod.GET)
     protected String gotoIndex() throws Exception {
-        return "forward:/index.html";
+        return "forward:/swagger-ui.html";
     }
 
     @ApiIgnore

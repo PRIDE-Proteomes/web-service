@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.sample.controller;
 
-import com.wordnik.swagger.annotations.Api;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class SampleController {
         return new TissueList(dataRetriever.getTissues());
     }
 
-    @RequestMapping(value ="/tissues/list/species/${species}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value ="/tissues/list/species/{species}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public TissueList getTissues(@RequestParam(value = "species", required = false, defaultValue = Species.defaultValue) String speciesName
@@ -51,7 +51,7 @@ public class SampleController {
         return new TissueList(dataRetriever.getTissues(species));
     }
 
-    @RequestMapping(value ="/tissues/count/species/${species}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value ="/tissues/count/species/{species}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public int countTissues(@RequestParam(value = "species", required = false, defaultValue = Species.defaultValue) String speciesName

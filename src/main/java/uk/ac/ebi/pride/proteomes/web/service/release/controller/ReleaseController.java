@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.release.controller;
 
-import com.wordnik.swagger.annotations.Api;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class ReleaseController {
         return list;
     }
 
-    @RequestMapping(value = "/summary/species/${species}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/summary/species/{species}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ReleaseSummary getReleaseSummaryForSpecies(@RequestParam(value = "species", required = false, defaultValue = Species.defaultValue) String speciesName){

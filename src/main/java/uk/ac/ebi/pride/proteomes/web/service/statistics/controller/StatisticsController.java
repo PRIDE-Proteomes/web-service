@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.proteomes.web.service.statistics.controller;
 
-import com.wordnik.swagger.annotations.Api;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
