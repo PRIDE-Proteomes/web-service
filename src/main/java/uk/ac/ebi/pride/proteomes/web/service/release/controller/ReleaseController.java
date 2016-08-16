@@ -41,9 +41,9 @@ public class ReleaseController {
     @RequestMapping(value = "/summary/species/{species}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ReleaseSummary getReleaseSummaryForSpecies(@RequestParam(value = "species", required = false, defaultValue = Species.defaultValue) String speciesName){
+    public ReleaseSummary getReleaseSummaryForSpecies(@PathVariable(value = "species") String speciesTaxId){
 
-        Species species = Species.getFromString(speciesName);
+        Species species = Species.getFromString(speciesTaxId);
         logger.info("Release: getReleaseSummaryForSpecies request");
         return dataRetriever.getReleaseSummary(species);
     }
