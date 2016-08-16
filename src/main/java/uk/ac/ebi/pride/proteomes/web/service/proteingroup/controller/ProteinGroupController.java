@@ -71,7 +71,5 @@ public class ProteinGroupController extends ProteomesService {
         list.addAll(dataRetriever.getProteinGroupsForProtein(acc));
         return list;
     }
-
-
-
 }
+
