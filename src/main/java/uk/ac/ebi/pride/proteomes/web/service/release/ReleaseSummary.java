@@ -13,6 +13,9 @@ public class ReleaseSummary {
     @ApiModelProperty(value = "the release summary's species (taxon id)")
     private Integer taxonID;
 
+    @ApiModelProperty(value = "the release summary's species (scientific name)")
+    private String scientificName;
+
     @ApiModelProperty(value = "")
     private String referenceDatabase;
 
@@ -76,6 +79,29 @@ public class ReleaseSummary {
     @ApiModelProperty(value = "")
     private Long numMappedGenesWithUniquePeptides;
 
+    //Protein Evidence
+
+    @ApiModelProperty(value = "")
+    private Long numProteinsWithExpEvidence;
+
+    @ApiModelProperty(value = "")
+    private Long numProteinsWithExpEvidenceAtTranscript;
+
+    @ApiModelProperty(value = "")
+    private Long numProteinsWithEvidenceInferredByHomology;
+
+    @ApiModelProperty(value = "")
+    private Long numProteinsWithEvidencePredicted;
+
+    @ApiModelProperty(value = "")
+    private Long numProteinsWithEvidenceUncertain;
+
+    @ApiModelProperty(value = "")
+    private Long numProteinsWithEvidenceNotReported;
+
+    @ApiModelProperty(value = "")
+    private Long numMappedProteinsWithExpEvidence;
+
     @ApiModelProperty(value = "")
     private Long numMappedProteinsWithExpEvidenceAtTranscript;
 
@@ -88,12 +114,23 @@ public class ReleaseSummary {
     @ApiModelProperty(value = "")
     private Long numMappedProteinWithEvidenceUncertain;
 
+    @ApiModelProperty(value = "")
+    private Long numMappedProteinsWithEvidenceNotReported;
+
     public Integer getTaxonID() {
         return taxonID;
     }
 
     public void setTaxonID(Integer taxonID) {
         this.taxonID = taxonID;
+    }
+
+    public String getScientificName() {
+        return scientificName;
+    }
+
+    public void setScientificName(String scientificName) {
+        this.scientificName = scientificName;
     }
 
     public String getReferenceDatabase() {
@@ -264,6 +301,62 @@ public class ReleaseSummary {
         this.numMappedGenesWithUniquePeptides = numMappedGenesWithUniquePeptides;
     }
 
+    public Long getNumProteinsWithExpEvidence() {
+        return numProteinsWithExpEvidence;
+    }
+
+    public void setNumProteinsWithExpEvidence(Long numProteinsWithExpEvidence) {
+        this.numProteinsWithExpEvidence = numProteinsWithExpEvidence;
+    }
+
+    public Long getNumProteinsWithExpEvidenceAtTranscript() {
+        return numProteinsWithExpEvidenceAtTranscript;
+    }
+
+    public void setNumProteinsWithExpEvidenceAtTranscript(Long numProteinsWithExpEvidenceAtTranscript) {
+        this.numProteinsWithExpEvidenceAtTranscript = numProteinsWithExpEvidenceAtTranscript;
+    }
+
+    public Long getNumProteinsWithEvidenceInferredByHomology() {
+        return numProteinsWithEvidenceInferredByHomology;
+    }
+
+    public void setNumProteinsWithEvidenceInferredByHomology(Long numProteinsWithEvidenceInferredByHomology) {
+        this.numProteinsWithEvidenceInferredByHomology = numProteinsWithEvidenceInferredByHomology;
+    }
+
+    public Long getNumProteinsWithEvidencePredicted() {
+        return numProteinsWithEvidencePredicted;
+    }
+
+    public void setNumProteinsWithEvidencePredicted(Long numProteinsWithEvidencePredicted) {
+        this.numProteinsWithEvidencePredicted = numProteinsWithEvidencePredicted;
+    }
+
+    public Long getNumProteinsWithEvidenceUncertain() {
+        return numProteinsWithEvidenceUncertain;
+    }
+
+    public void setNumProteinsWithEvidenceUncertain(Long numProteinsWithEvidenceUncertain) {
+        this.numProteinsWithEvidenceUncertain = numProteinsWithEvidenceUncertain;
+    }
+
+    public Long getNumProteinsWithEvidenceNotReported() {
+        return numProteinsWithEvidenceNotReported;
+    }
+
+    public void setNumProteinsWithEvidenceNotReported(Long numProteinsWithEvidenceNotReported) {
+        this.numProteinsWithEvidenceNotReported = numProteinsWithEvidenceNotReported;
+    }
+
+    public Long getNumMappedProteinsWithExpEvidence() {
+        return numMappedProteinsWithExpEvidence;
+    }
+
+    public void setNumMappedProteinsWithExpEvidence(Long numMappedProteinsWithExpEvidence) {
+        this.numMappedProteinsWithExpEvidence = numMappedProteinsWithExpEvidence;
+    }
+
     public Long getNumMappedProteinsWithExpEvidenceAtTranscript() {
         return numMappedProteinsWithExpEvidenceAtTranscript;
     }
@@ -294,5 +387,13 @@ public class ReleaseSummary {
 
     public void setNumMappedProteinWithEvidenceUncertain(Long numMappedProteinWithEvidenceUncertain) {
         this.numMappedProteinWithEvidenceUncertain = numMappedProteinWithEvidenceUncertain;
+    }
+
+    public Long getNumMappedProteinsWithEvidenceNotReported() {
+        return numMappedProteinsWithEvidenceNotReported;
+    }
+
+    public void setNumMappedProteinsWithEvidenceNotReported(Long numMappedProteinsWithEvidenceNotReported) {
+        this.numMappedProteinsWithEvidenceNotReported = numMappedProteinsWithEvidenceNotReported;
     }
 }

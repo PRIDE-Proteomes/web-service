@@ -183,6 +183,7 @@ public class ModelConverter {
         ReleaseSummary convertedReleaseSummary = new ReleaseSummary();
 
         convertedReleaseSummary.setTaxonID(releaseSummary.getId().getTaxid());
+        convertedReleaseSummary.setScientificName(Species.getByTaxid(releaseSummary.getId().getTaxid()).getScientificName());
         convertedReleaseSummary.setReferenceDatabase(releaseSummary.getReferenceDatabase());
         convertedReleaseSummary.setReferenceDatabaseVersion(releaseSummary.getReferenceDatabaseVersion());
         convertedReleaseSummary.setNumPeptiforms(releaseSummary.getNumPeptiforms());
@@ -204,10 +205,20 @@ public class ModelConverter {
         convertedReleaseSummary.setNumMappedCanonicalProteinsWithUniquePeptides(releaseSummary.getNumMappedCanonicalProteinsWithUniquePeptides());
         convertedReleaseSummary.setNumMappedIsoformProteinsWithUniquePeptides(releaseSummary.getNumMappedIsoformProteinsWithUniquePeptides());
         convertedReleaseSummary.setNumMappedGenesWithUniquePeptides(releaseSummary.getNumMappedGenesWithUniquePeptides());
+
+        //Protein Evidence
+        convertedReleaseSummary.setNumProteinsWithExpEvidence(releaseSummary.getNumProteinsWithExpEvidence());
+        convertedReleaseSummary.setNumProteinsWithExpEvidenceAtTranscript(releaseSummary.getNumProteinsWithExpEvidenceAtTranscript());
+        convertedReleaseSummary.setNumProteinsWithEvidenceInferredByHomology(releaseSummary.getNumProteinsWithEvidenceInferredByHomology());
+        convertedReleaseSummary.setNumProteinsWithEvidencePredicted(releaseSummary.getNumProteinsWithEvidencePredicted());
+        convertedReleaseSummary.setNumProteinsWithEvidenceUncertain(releaseSummary.getNumProteinsWithEvidenceUncertain());
+        convertedReleaseSummary.setNumProteinsWithEvidenceNotReported(releaseSummary.getNumProteinsWithEvidenceNotReported());
+        convertedReleaseSummary.setNumMappedProteinsWithExpEvidence(releaseSummary.getNumMappedProteinsWithExpEvidence());
         convertedReleaseSummary.setNumMappedProteinsWithExpEvidenceAtTranscript(releaseSummary.getNumMappedProteinsWithExpEvidenceAtTranscript());
         convertedReleaseSummary.setNumMappedProteinsWithEvidenceInferredByHomology(releaseSummary.getNumMappedProteinsWithEvidenceInferredByHomology());
         convertedReleaseSummary.setNumMappedProteinWithEvidencePredicted(releaseSummary.getNumMappedProteinWithEvidencePredicted());
         convertedReleaseSummary.setNumMappedProteinWithEvidenceUncertain(releaseSummary.getNumMappedProteinWithEvidenceUncertain());
+        convertedReleaseSummary.setNumMappedProteinsWithEvidenceNotReported(releaseSummary.getNumMappedProteinsWithEvidenceNotReported());
 
         return convertedReleaseSummary;
     }
